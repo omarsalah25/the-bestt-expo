@@ -358,6 +358,14 @@
           <!-- 3D Canvas Box -->
           <div class="relative w-full h-[470px] bg-[#070D19] rounded-2xl border-2 border-[#24324D] overflow-hidden shadow-inner flex items-center justify-center">
             
+            <!-- Floating Active Filter Banner -->
+            <div id="filter-active-banner" class="hidden absolute top-3 left-1/2 -translate-x-1/2 bg-[#0B1120]/95 backdrop-blur-md border border-amber-500/70 px-4 py-1.5 rounded-full text-xs text-amber-300 flex items-center gap-2.5 shadow-2xl z-20 transition-all font-semibold">
+              <span id="filter-banner-text">🔍 تم تصفية الطاولات • باقي الطاولات مخفية</span>
+              <button onclick="focusZone(0)" class="text-[10px] bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full font-bold hover:bg-amber-400 transition-all">
+                إظهار الكل (50 طاولة) ✕
+              </button>
+            </div>
+
             <canvas id="threeCanvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
 
             <!-- Floating 3D Control Hints Overlay -->
@@ -385,7 +393,7 @@
 
           <!-- Hall 3: Zone Capacity & Live Meeting Density Matrix -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-xs pt-1">
-            <div onclick="focusZone(1)" class="p-3 rounded-xl bg-[#0B1120] border border-cyan-500/40 hover:border-cyan-400 cursor-pointer transition-all space-y-1.5">
+            <div id="zone-card-1" onclick="focusZone(1)" class="p-3 rounded-xl bg-[#0B1120] border border-cyan-500/40 hover:border-cyan-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
                 <span class="font-bold text-cyan-400">جناح 1 • الاستلام الفوري</span>
                 <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
@@ -398,7 +406,7 @@
               </div>
             </div>
 
-            <div onclick="focusZone(2)" class="p-3 rounded-xl bg-[#0B1120] border border-purple-500/40 hover:border-purple-400 cursor-pointer transition-all space-y-1.5">
+            <div id="zone-card-2" onclick="focusZone(2)" class="p-3 rounded-xl bg-[#0B1120] border border-purple-500/40 hover:border-purple-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
                 <span class="font-bold text-purple-400">جناح 2 • زايد والساحل</span>
                 <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
@@ -411,7 +419,7 @@
               </div>
             </div>
 
-            <div onclick="focusZone(3)" class="p-3 rounded-xl bg-[#0B1120] border border-emerald-500/40 hover:border-emerald-400 cursor-pointer transition-all space-y-1.5">
+            <div id="zone-card-3" onclick="focusZone(3)" class="p-3 rounded-xl bg-[#0B1120] border border-emerald-500/40 hover:border-emerald-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
                 <span class="font-bold text-emerald-400">جناح 3 • التجمع الخامس</span>
                 <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
@@ -424,7 +432,7 @@
               </div>
             </div>
 
-            <div onclick="focusZone(4)" class="p-3 rounded-xl bg-[#0B1120] border border-orange-500/40 hover:border-orange-400 cursor-pointer transition-all space-y-1.5">
+            <div id="zone-card-4" onclick="focusZone(4)" class="p-3 rounded-xl bg-[#0B1120] border border-orange-500/40 hover:border-orange-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
                 <span class="font-bold text-orange-400">جناح 4 • العاصمة الإدارية</span>
                 <span class="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
@@ -437,7 +445,7 @@
               </div>
             </div>
 
-            <div onclick="focusZone(5)" class="p-3 rounded-xl bg-[#0B1120] border border-yellow-500/40 hover:border-yellow-400 cursor-pointer transition-all space-y-1.5">
+            <div id="zone-card-5" onclick="focusZone(5)" class="p-3 rounded-xl bg-[#0B1120] border border-yellow-500/40 hover:border-yellow-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
                 <span class="font-bold text-yellow-300">بوث مميز B67 • VIP</span>
                 <span class="text-[10px] bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded font-mono font-bold">8 × 4 م</span>
@@ -1378,7 +1386,12 @@
     // 3D Table Models Data (Coordinates in 3D Space)
     
     // Focus Camera on Selected Hall 3 Zone
+    let activeFilterZone = 0; // 0 = Show all 50 tables, 1..5 = Show ONLY filtered zone and HIDE THE REST!
+
     function focusZone(zId) {
+      activeFilterZone = zId;
+
+      // Update button active styles
       for (let i = 0; i <= 5; i++) {
         const btn = document.getElementById('zbtn-' + i);
         if (!btn) continue;
@@ -1386,6 +1399,38 @@
           btn.className = 'px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all shadow';
         } else {
           btn.className = 'px-2.5 py-1 rounded-lg bg-[#0B1120] text-slate-300 border border-[#24324D] hover:bg-[#151F32] transition-all';
+        }
+      }
+
+      // Update capacity cards to highlight selected zone
+      for (let i = 1; i <= 5; i++) {
+        const card = document.getElementById('zone-card-' + i);
+        if (card) {
+          if (zId === i) {
+            card.classList.add('ring-2', 'ring-amber-400', 'bg-[#151F32]');
+          } else {
+            card.classList.remove('ring-2', 'ring-amber-400', 'bg-[#151F32]');
+          }
+        }
+      }
+
+      // Update Floating Banner
+      const banner = document.getElementById('filter-active-banner');
+      const bText = document.getElementById('filter-banner-text');
+      if (banner && bText) {
+        if (zId === 0) {
+          banner.classList.add('hidden');
+        } else {
+          banner.classList.remove('hidden');
+          const zNames = [
+            '',
+            'جناح 1 • الاستلام الفوري والفندقي (12 طاولة)',
+            'جناح 2 • زايد وأكتوبر والساحل والسخنة (12 طاولة)',
+            'جناح 3 • التجمع الخامس والقاهرة الجديدة (12 طاولة)',
+            'جناح 4 • العاصمة الإدارية الجديدة (12 طاولة)',
+            'بوث مميز B67 • VIP Majlis (طاولتان فقط)'
+          ];
+          bText.innerText = '🔍 تم تصفية: ' + zNames[zId] + ' • باقي الطاولات مخفية';
         }
       }
 
@@ -2559,8 +2604,12 @@
         ctx.fillText('🚪 المدخل الرئيسي (MAIN ENTRANCE)', entP.x, entP.y);
       }
 
-      // 4. Render Depth-Sorted 3D Tables with Dynamic Beacons
-      const sortedTables = [...tables3D].map(t => {
+      // 4. Render Depth-Sorted 3D Tables (Only show filtered tables, HIDE THE REST!)
+      const currentVisibleTables = (activeFilterZone === 0)
+        ? tables3D
+        : tables3D.filter(t => t.zoneId === activeFilterZone);
+
+      const sortedTables = [...currentVisibleTables].map(t => {
         const proj = project3D(t.x, t.y, t.z, cx, cy);
         return { ...t, proj };
       }).sort((a, b) => b.proj.z - a.proj.z);
@@ -2703,7 +2752,11 @@
         const cy = rect.height / 2 + 25;
         let found = null;
 
-        tables3D.forEach(t => {
+        const activeTables = (activeFilterZone === 0)
+          ? tables3D
+          : tables3D.filter(t => t.zoneId === activeFilterZone);
+
+        activeTables.forEach(t => {
           const p = project3D(t.x, t.y, t.z, cx, cy);
           const dist = Math.hypot(mouseX - p.x, mouseY - p.y);
           if (dist < t.radius * p.scale * 1.5) {

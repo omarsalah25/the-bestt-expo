@@ -79,7 +79,10 @@ flowchart LR
   - **Zone 4 (Coral `#F97316`)**: العاصمة الإدارية الجديدة (Booths B43–B50, B59–B66) • 12 Tables (T37–T48).
   - **Special VIP Booth B67 ($8\times 4\text{m}$)**: كبار المستثمرين VIP Majlis • 2 Negotiation Pods.
 - **Total Capacity Matrix**: Exactly 48 meeting tables and 192 negotiation armchairs matching the architectural specification.
-- **Zone Focus Navigation**: 1-click ribbon filter (`[🌐 All]`, `[🏙️ Zone 1]`, `[🌊 Zone 2]`, `[💎 Zone 3]`, `[🏛️ Zone 4]`, `[👑 VIP B67]`) with cinematic camera animation.
+- **Zone Focus Navigation & Strict Table Isolation**:
+  - Selecting any zone filter button (`[🏙️ Zone 1]`, `[🌊 Zone 2]`, `[💎 Zone 3]`, `[🏛️ Zone 4]`, or `[👑 VIP B67]`) or clicking any zone card below the canvas **strictly isolates that zone's tables and hides all other tables from the 3D scene**.
+  - Raycasting only interacts with the visible tables to eliminate accidental clicks on hidden zones.
+  - An interactive floating status pill (`[🔍 تم تصفية: ... • إظهار الكل ✕]`) provides 1-click restoration of all 50 tables.
 
 ---
 
