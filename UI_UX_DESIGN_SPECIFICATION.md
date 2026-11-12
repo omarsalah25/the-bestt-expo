@@ -38,105 +38,73 @@ flowchart LR
   - Floating 3D holographic badges hovering directly above each table:
     - 🟢 `T-1 ● AVAILABLE` (Emerald green aura, ready for instant selection)
     - 🔵 `T-2 ● OCCUPIED (18m left)` (Sapphire blue with pulsing concentric arrival wave)
-    - 🟡 `T-3 ● RESERVED 15:00` (Subtle champagne gold outline)
-    - 🟠 `T-4 ● WALK-IN READY` (Amber ring: recycled from 15-min no-show)
-    - 🟣 `VIP POD A ● PRIVATE` (Royal purple acoustic glass isolation chamber)
-
-### 2.2 Interactive 3D Camera Controls
-- **Touch & Mouse Orbit**:
-  - Click & drag (or 1-finger swipe): 360° orbital rotation around the booth/hall center.
-  - Scroll wheel (or 2-finger pinch): Smooth exponential zoom in/out with boundary clamping.
-  - Right-click drag (or 2-finger pan): Pan across different exhibition halls.
-- **Preset View Buttons**:
-  - `[Isometric 45°]`: Default luxury bird's-eye perspective.
-  - `[Top-Down 2D]`: Technical CAD view for precision table alignment.
-  - `[Booth B-14 Focus]`: Auto-smooth camera dolly directly inside Emaar's pavilion.
-  - `[VIP Lounge View]`: Centers on the private acoustic negotiation pods.
-- **Click-to-Book Raycasting**:
-  - Hovering over a 3D table illuminates the mesh and displays an interactive tooltip with table number, assigned sales rep, and next open slot.
-  - Clicking any 3D table immediately triggers the **1-on-1 Consultation Drawer** pre-selected to that exact physical table.
-
-### 2.3 2D Hall Image to 3D Spatial Presentation Modes
-- **Mode 1: `[🗺️ 2D Hall Image Projection]`**:
-  - Projects the uploaded 2D hall CAD plan or image onto a dark titanium 3D pedestal in WebGL.
-  - Retains authentic architectural aisle labels, entrance portals, and developer boundaries.
-  - 3D tables cast realistic drop contact shadows directly onto the hall graphic.
-- **Mode 2: `[🏢 3D Wall Pop-Up Extrusion]`**:
-  - Procedurally extrudes booth perimeter walls vertically ($2.8\text{m}$ / $Y = -48\text{px}$) from the 2D floorplan.
-  - Renders semi-transparent frosted acrylic glass partitions, gold top edge rails, and suspended 3D signboards.
-- **Mode 3: `[⚡ Dark Hologram Grid]`**:
-  - Minimalist cyber titanium grid with coordinate axes for low-bandwidth devices.
-- **Volumetric Hologram Beacons (`[💡 Beacons: ON/OFF]` Toggle)**:
-  - Vertical glowing light columns shooting upward from each table with live status color codes and pulsing halo rings.
-- **Interactive Image Uploader**:
-  - `[📁 Upload Your Hall Image]` file input enabling organizers or investors to drop any custom exhibition floorplan and preview it mapped live in 3D space.
-
-### 2.4 Hall 3 Architectural Layout & 48-Table Grid Experience
-- **Calibrated directly from `hall3_floorplan.jpeg` ($88\text{m} \times 55\text{m}$)**:
-  - **Zone 1 (Cyan `#06B6D4`)**: الاستلام الفوري والفندقي (Booths B1–B9, B19–B26) • 12 Tables (T1–T12).
-  - **Zone 2 (Purple `#8B5CF6`)**: أكتوبر وزايد والساحل والسخنة (Booths B10–B18, B27–B34) • 12 Tables (T13–T24).
-  - **Zone 3 (Emerald `#10B981`)**: التجمع الخامس والقاهرة الجديدة (Booths B35–B42, B51–B58) • 12 Tables (T25–T36).
-  - **Zone 4 (Coral `#F97316`)**: العاصمة الإدارية الجديدة (Booths B43–B50, B59–B66) • 12 Tables (T37–T48).
-  - **Special VIP Booth B67 ($8\times 4\text{m}$)**: كبار المستثمرين VIP Majlis • 2 Negotiation Pods.
-- **Total Capacity Matrix**: Exactly 48 meeting tables and 192 negotiation armchairs matching the architectural specification.
-- **Zone Focus Navigation & Strict Table Isolation**:
-  - Selecting any zone filter button (`[🏙️ Zone 1]`, `[🌊 Zone 2]`, `[💎 Zone 3]`, `[🏛️ Zone 4]`, or `[👑 VIP B67]`) or clicking any zone card below the canvas **strictly isolates that zone's tables and hides all other tables from the 3D scene**.
-  - Raycasting only interacts with the visible tables to eliminate accidental clicks on hidden zones.
-  - An interactive floating status pill (`[🔍 تم تصفية: ... • إظهار الكل ✕]`) provides 1-click restoration of all 50 tables.
+    - 🟡 `T-3 ● RESERVED` (Amber glow, locked for upcoming consultation)
+    - 🟣 `T-4 ● RECYCLED (Walk-in Ready)` (Purple accent indicating freed no-show table)
+  - Hover-Only Table Labels: Floating labels and status pills remain invisible by default to prevent visual clutter, smoothly animating into view only when the cursor hovers directly over that specific table.
+  - Strict Zone Table Isolation: When filtering by specific zones (Zone 1 East, Zone 2 Central, Zone 3 West, Zone 4 North, or VIP Lounge B67), all non-matching tables are completely hidden, and raycasting is strictly restricted to visible tables.
+- **Un-mirrored Coordinate Orientation**: The architectural floorplan (`hall3_floorplan.jpeg`, $88\text{m} \times 55\text{m}$, 67 booths B1–B67) is mapped upright so Arabic typography and entrance signage read naturally from right-to-left upright. Manual `[🪞 Flip X]` and `[🪞 Flip Y]` toggles are available on the 3D toolbar.
 
 ---
 
-## 3. Screen-by-Screen User Flow (Customer Portal)
+## 3. Complete Screens (Sub-Views) Directory
 
-#### Screen 1.1: Intelligent Matchmaking Feed
-- Asset class and budget filters (*Villas, Towers, Commercial, Land*).
-- Developer showcase cards featuring project ROI %, booth code, and active sales rep count.
+Across the platform, there are **13 dedicated, self-contained sub-views**:
 
-#### Screen 1.2: 3D Digital Twin & Table Selection Hub
-- Full-screen or modal interactive 3D WebGL canvas.
-- Attendee rotates the 3D model, visually inspects the developer booth, and clicks an available table (e.g., *Table 1 - Window Side*).
+### 3.1 Customer / Investor Portal (`portal-customer`)
+1. **`c-view-browse` (Explore & Matchmaking)**: Filter developers by location (New Cairo, New Capital, North Coast, Red Sea) and asset class (Luxury Villas, Commercial, Apartments). Features 1-click consultation booking and "View on 3D Twin" camera focus.
+2. **`c-view-3d` (Hall 3 3D Digital Twin)**: Fullscreen WebGL spatial canvas with 50 interactive tables, camera angle presets (45°, Top-Down, First-Person), presentation modes (2D Blueprint Texture Projection, 3D Pop-up Walls, Hologram Grid), and selective zone filtering.
+3. **`c-view-agenda` (My Agenda & Consultations)**: Chronological card list of confirmed and pending meetings with 1-click calendar download (.ics), in-place rescheduling, cancellation with instant table recycling, and 3D map navigation.
+4. **`c-view-pass` (Dynamic Fast-Track QR Pass)**: High-security fast-track pass with dynamic QR code, real-time countdown timer, "I Have Arrived" WhatsApp arrival alert trigger, Apple/Google Wallet integration, and offline PDF download.
 
-#### Screen 1.3: 3-Step Interactive Booking Drawer
-- **Step 1 (Day Selector)**: Segmented control for Expo Day 1, Day 2, Day 3.
-- **Step 2 (Specialist Selection)**: Choose specialist (e.g., *Tariq Al-Mansoor - VIP Director*).
-- **Step 3 (30-Minute Time Slot Grid)**: Morning and afternoon slots with instant Redis collision checks.
+### 3.2 Developer / Exhibitor Portal (`portal-developer`)
+1. **`dev-view-schedule` (Booth Tables & Live Desk)**: Live occupancy grid for booth tables (T1–T4) with countdown timer, active session conclude button, spontaneous walk-in seating, and inbound meeting requests queue with Approve, Counter-Propose, and Decline actions.
+2. **`dev-view-crm` (Native Expo CRM & Pipeline)**: Full lead management table with ratings (HOT/WARM/COLD), deal sizes ($), stages, assigned reps, 1-click CSV export, manual offline lead entry, and detailed session audit timelines.
+3. **`dev-view-analytics` (Booth Analytics & Heatmap)**: Real-time table turnover velocity (sessions/table/day), average duration (mins), qualification rate (%), 8-hour table occupancy heatmap (10:00–18:00 across Tables 1–4), and sales rep leaderboard.
+4. **`dev-view-team` (Sales Rep Roster)**: Management cockpit for booth consultants (Tariq, Sarah, Elena, Mostafa) with real-time table assignment dropdowns, WhatsApp contacts, and duty presence toggles.
 
-#### Screen 1.4: Dynamic Anti-Fraud QR Pass
-- Dynamic time-based QR code with 60-second anti-screenshot pulsing token.
-- Big CTA: **`[🔔 I Have Arrived at the Booth]`** (triggers immediate WhatsApp alert & audio chime on rep's tablet).
-
----
-
-## 4. Developer / Exhibitor Portal Specifications
-
-#### Screen 2.1: 3D Booth Command & Table Timeline
-- Live 3D status visualizer paired with the 4-table schedule timeline.
-- Visual alerts: Table 2 pulses blue when attendee arrives.
-- **Walk-In Action**: "+ Seat Walk-In" button for idle or recycled no-show tables.
-
-#### Screen 2.2: Inbound Review Queue
-- Investor declared budget ($4.2M), target asset type, and requested slot.
-- 1-click **Approve**, **Counter-Propose Alternative Slot**, or **Decline**.
-
-#### Screen 2.3: 10-Second Lead Capture (Native CRM)
-- Rating: `HOT 🔥` / `WARM ☀️` / `COLD ❄️`.
-- Deal size input slider ($2.5M).
-- Checkbox: `[✓ Automatically Send High-Res PDF Brochure via WhatsApp]`.
+### 3.3 Organizer / Super Admin Center (`portal-admin`)
+1. **`adm-view-pulse` (Venue Pulse & Real-Time Oversight)**: Global venue KPIs (Total meetings, live in-session, VIP occupancy, declared pipeline), zone capacity gauges, live master meetings priority desk, and emergency omnichannel venue broadcast.
+2. **`adm-view-master-meetings` (Master Meeting Ledger)**: Live database table tracking all 50 tables across Hall 3 with filters (ALL, IN_PROGRESS, RESERVED, FREE, RECYCLED), live search bar, session audit modals, and emergency force-free overrides.
+3. **`adm-view-vip-lounge` (Central VIP Executive Lounge Operations)**: Cockpit for Booth B67 and private negotiation Pods 1 & 2 (Tables T49 & T50) with 25-seat capacity gauge, active VIP roster, "+ Admit VIP Guest" modal, and 1-click hospitality concierge dispatch (Espresso, Champagne, Legal NDA, Limousine).
+4. **`adm-view-builder` (Floorplan Visualizer & CAD)**: Interactive 2D/3D floorplan visualizer with Hall 3 booth configurations (B1–B67), blueprint CAD/SVG upload, new booth partition tool, and GeoJSON export.
+5. **`adm-view-notifications` (Omnichannel Gateway)**: Standalone integration center for Meta WhatsApp Cloud API and Twilio SMS fallback with live transactional dispatch log, instant retry mechanism, and test webhook payload simulator.
 
 ---
 
-## 5. Organizer / Super Admin Center Specifications
+## 4. Complete Modals (Dialog Screens) Directory
 
-#### Screen 3.1: Global Venue Pulse & Live 3D Hall Density
-- 3D heat map of entire exhibition center showing crowd density and table occupancy.
-- Master KPIs: Total meetings, completion rate, declared pipeline ($184.5M).
+The platform includes **16 comprehensive, interactive modal screens**:
 
-#### Screen 3.2: Native Visual Floorplan & 3D Builder
-- Upload raw CAD/SVG blueprints.
-- Vector & 3D extrusion tools to draw booths and define table coordinates.
-
-#### Screen 3.3: Master Meetings Audit Log & Overrides
-- Searchable log of every scheduled session across all halls with organizer reassignment controls.
+| Modal ID | Purpose | Portal | Key Interactive Actions |
+|---|---|---|---|
+| `bookingModal` | Schedule Consultation | Customer | Select day, time slot, specialist rep; generates pass & reserves 3D table |
+| `dealModal` | Conclude Session & Log Deal | Developer | Rate lead, input deal size ($), log private notes, instant WhatsApp brochure send |
+| `modal-walkin-seat` | Immediate Walk-In Seating | Developer | Enter visitor name, phone, budget tier, select T1/T4, start 30m countdown |
+| `modal-counter-propose` | Propose Alternative Slot | Developer | Counter with new day/slot/table and send WhatsApp offer to investor |
+| `modal-dev-decline` | Polite Rejection & Redirect | Developer | Select decline reason and dispatch courteous WhatsApp notice |
+| `modal-cancel-meeting` | Cancel Consultation | Customer | Select reason, immediately release table in 3D, alert rep via WhatsApp |
+| `modal-reschedule` | Reschedule Consultation | Customer | Pick new day/slot without cancelling, updates pass & calendar |
+| `modal-calendar-export` | Personal Calendar Sync | Customer | Download universal `.ics` file or open pre-filled Google Calendar event |
+| `modal-add-lead` | Register Offline Lead | Developer | Add manual walk-in prospect to CRM pipeline and send WhatsApp welcome kit |
+| `modal-lead-audit` | Session & Lead Audit Trail | All Portals | Step-by-step timestamped lifecycle (Booking -> Pass -> Arrival -> Deal) |
+| `modal-force-free` | Force Free Abandoned Table | Admin | Unlock PostgreSQL `btree_gist` constraint and recycle table for walk-ins |
+| `modal-vip-accredit` | Admit & Accredit VIP Guest | Admin | Accredit HNWI guest, assign Pod 1/2 in Booth B67, page hospitality concierge |
+| `modal-emergency-broadcast`| Venue-Wide Alert | Admin | Blast urgent announcement across WhatsApp, SMS & booth chimes |
+| `modal-blueprint-upload` | Upload Blueprint CAD/SVG | Admin | Upload architectural blueprint and re-project ground dimensions (88m × 55m) |
+| `modal-booth-builder` | Partition New Booth Space | Admin | Define booth code, zone, dimensions ($8\text{m} \times 6\text{m}$), and meeting tables count |
+| `modal-test-notification` | Test Notification Webhook | Admin | Preview Meta Cloud API JSON payload and dispatch simulated message |
 
 ---
-*UI/UX Design Specification v3.2 | 3D Digital Twin Standard*
+
+## 5. Omnichannel Floating Toast System
+
+- Container: `#toastContainer` fixed at top-right viewport.
+- 5 Visual Brand Types:
+  - `whatsapp`: Emerald green theme with WhatsApp icon and delivery timestamp.
+  - `success`: Teal/emerald accent with action confirmation.
+  - `warning`: Amber alert badge for table recycling and cancellation notices.
+  - `danger`: Crimson badge for emergency broadcasts and administrative overrides.
+  - `info`: Sapphire blue badge for calendar exports and roster reassignments.
+
+---
+*UI/UX Design Specification v4.0 | Fully Verified Standalone Expo OS Standard*
