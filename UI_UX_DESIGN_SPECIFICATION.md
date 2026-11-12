@@ -71,6 +71,16 @@ flowchart LR
 - **Interactive Image Uploader**:
   - `[📁 Upload Your Hall Image]` file input enabling organizers or investors to drop any custom exhibition floorplan and preview it mapped live in 3D space.
 
+### 2.4 Hall 3 Architectural Layout & 48-Table Grid Experience
+- **Calibrated directly from `hall3_floorplan.jpeg` ($88\text{m} \times 55\text{m}$)**:
+  - **Zone 1 (Cyan `#06B6D4`)**: الاستلام الفوري والفندقي (Booths B1–B9, B19–B26) • 12 Tables (T1–T12).
+  - **Zone 2 (Purple `#8B5CF6`)**: أكتوبر وزايد والساحل والسخنة (Booths B10–B18, B27–B34) • 12 Tables (T13–T24).
+  - **Zone 3 (Emerald `#10B981`)**: التجمع الخامس والقاهرة الجديدة (Booths B35–B42, B51–B58) • 12 Tables (T25–T36).
+  - **Zone 4 (Coral `#F97316`)**: العاصمة الإدارية الجديدة (Booths B43–B50, B59–B66) • 12 Tables (T37–T48).
+  - **Special VIP Booth B67 ($8\times 4\text{m}$)**: كبار المستثمرين VIP Majlis • 2 Negotiation Pods.
+- **Total Capacity Matrix**: Exactly 48 meeting tables and 192 negotiation armchairs matching the architectural specification.
+- **Zone Focus Navigation**: 1-click ribbon filter (`[🌐 All]`, `[🏙️ Zone 1]`, `[🌊 Zone 2]`, `[💎 Zone 3]`, `[🏛️ Zone 4]`, `[👑 VIP B67]`) with cinematic camera animation.
+
 ---
 
 ## 3. Screen-by-Screen User Flow (Customer Portal)

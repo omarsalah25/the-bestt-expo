@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Autonomous Real Estate Expo & Meeting Operating System</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="hall3_image_data.js"></script>
   <style>
     :root {
       --gold-primary: #D4AF37;
@@ -278,11 +279,11 @@
           <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-3 border-b border-[#24324D]">
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-amber-400 text-lg">🕶️</span>
-                <h3 class="text-base font-bold text-white">3D Spatial Digital Twin & Table Visualizer</h3>
-                <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-mono font-bold">THREE.JS / WEBGL</span>
+                <span class="text-amber-400 text-lg">🏛️</span>
+                <h3 class="text-base font-bold text-white">قاعة 3 | المخطط التفاعلي ثلاثي الأبعاد والـ 48 طاولة</h3>
+                <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-mono font-bold">HALL 3 • 88m × 55m</span>
               </div>
-              <p class="text-xs text-slate-400 mt-0.5">Drag to rotate 360° in 3D space • Scroll to zoom • Click any table to book instantly</p>
+              <p class="text-xs text-slate-400 mt-0.5">مبني بدقة على المخطط المعماري: 67 بوث (B1–B67) • 4 أجنحة • 48 طاولة • 192 مقعد تفاوض</p>
             </div>
 
             <!-- 3D Camera Controls & Legend -->
@@ -316,7 +317,7 @@
             
             <div class="flex items-center gap-2">
               <label class="cursor-pointer px-2.5 py-1 text-xs rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition-all flex items-center gap-1.5 font-medium">
-                <span>📁 Upload Your Hall Image (PNG/JPG)</span>
+                <span>📁 Upload Custom Floorplan</span>
                 <input type="file" id="customHallUpload" accept="image/*" class="hidden" onchange="handleHallImageUpload(event)">
               </label>
               <button onclick="toggleLightBeacons()" id="btn-beacons" class="px-2.5 py-1 text-xs rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono">
@@ -325,73 +326,123 @@
             </div>
           </div>
 
+          <!-- Zone Filter Ribbon for Hall 3 -->
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="text-slate-400 font-semibold">📍 تصفية الأجنحة:</span>
+            <button onclick="focusZone(0)" id="zbtn-0" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all shadow">
+              🌐 الكل (48 طاولة)
+            </button>
+            <button onclick="focusZone(1)" id="zbtn-1" class="px-2.5 py-1 rounded-lg bg-[#0B1120] text-cyan-400 border border-cyan-500/40 hover:bg-cyan-500/20 transition-all">
+              🏙️ جناح 1: الاستلام الفوري والفندقي (T1-T12)
+            </button>
+            <button onclick="focusZone(2)" id="zbtn-2" class="px-2.5 py-1 rounded-lg bg-[#0B1120] text-purple-400 border border-purple-500/40 hover:bg-purple-500/20 transition-all">
+              🌊 جناح 2: زايد وأكتوبر والساحل والسخنة (T13-T24)
+            </button>
+            <button onclick="focusZone(3)" id="zbtn-3" class="px-2.5 py-1 rounded-lg bg-[#0B1120] text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/20 transition-all">
+              💎 جناح 3: التجمع الخامس والقاهرة الجديدة (T25-T36)
+            </button>
+            <button onclick="focusZone(4)" id="zbtn-4" class="px-2.5 py-1 rounded-lg bg-[#0B1120] text-orange-400 border border-orange-500/40 hover:bg-orange-500/20 transition-all">
+              🏛️ جناح 4: العاصمة الإدارية (T37-T48)
+            </button>
+            <button onclick="focusZone(5)" id="zbtn-5" class="px-2.5 py-1 rounded-lg bg-[#0B1120] text-yellow-300 border border-yellow-500/40 hover:bg-yellow-500/20 transition-all font-bold">
+              👑 بوث B67 المميز (8×4م VIP)
+            </button>
+          </div>
+
           <!-- 3D Canvas Box -->
-          <div class="relative w-full h-[450px] bg-[#070D19] rounded-2xl border-2 border-[#24324D] overflow-hidden shadow-inner flex items-center justify-center">
+          <div class="relative w-full h-[470px] bg-[#070D19] rounded-2xl border-2 border-[#24324D] overflow-hidden shadow-inner flex items-center justify-center">
             
             <canvas id="threeCanvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
 
             <!-- Floating 3D Control Hints Overlay -->
             <div class="absolute bottom-3 left-3 bg-[#0B1120]/80 backdrop-blur-md border border-[#24324D] px-3 py-1.5 rounded-xl text-[11px] text-slate-300 flex items-center gap-3 pointer-events-none">
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span> Free Table</span>
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span> In Session (Active)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span> طاولة متاحة (Free)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span> جلسة جارية (Active)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> زيارة مباشرة (Walk-in)</span>
               <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400 inline-block"></span> VIP Pod</span>
-              <span class="text-slate-500">| 🖱️ Drag to orbit • 👆 Click table</span>
+              <span class="text-slate-500">| 🖱️ اسحب للتدوير 360° • 👆 انقر للحجز</span>
             </div>
 
             <!-- Dynamic 3D Table Tooltip (Hover) -->
-            <div id="threeTooltip" class="hidden absolute pointer-events-none bg-[#151F32]/95 backdrop-blur-md border border-amber-400/60 p-3 rounded-xl shadow-2xl text-xs space-y-1 z-30 transition-all">
+            <div id="threeTooltip" class="hidden absolute pointer-events-none bg-[#151F32]/95 backdrop-blur-md border border-amber-400/60 p-3 rounded-xl shadow-2xl text-xs space-y-1 z-30 transition-all text-right" dir="rtl">
               <div class="flex items-center justify-between gap-3">
-                <span id="tt-name" class="font-bold text-white">Table 1</span>
+                <span id="tt-name" class="font-bold text-white">طاولة 1 (T-1)</span>
                 <span id="tt-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">FREE</span>
               </div>
-              <p id="tt-booth" class="text-slate-400 text-[11px]">Emaar Properties • Booth B-14</p>
-              <p id="tt-rep" class="text-amber-300 text-[11px]">Rep: Tariq Al-Mansoor</p>
-              <p class="text-emerald-400 text-[10px] font-mono mt-1">👉 Click to Book This Table</p>
+              <p id="tt-zone" class="text-slate-300 text-[11px] font-semibold">جناح 1 • الاستلام الفوري</p>
+              <p id="tt-booth" class="text-slate-400 text-[11px]">بوث B1 • طلعت مصطفى (مدينتي)</p>
+              <p id="tt-rep" class="text-amber-300 text-[11px]">المستشار: أحمد الشناوي</p>
+              <p class="text-emerald-400 text-[10px] font-mono mt-1">👉 انقر لحجز هذه الطاولة مباشرة</p>
             </div>
 
           </div>
 
-          <!-- Table Capacity Quick Selector Strip -->
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs pt-1">
-            <button onclick="click3DTableByName('Table 1')" class="p-2.5 rounded-xl bg-[#0B1120] border border-emerald-500/40 hover:border-emerald-400 text-left transition-all">
+          <!-- Hall 3: Zone Capacity & Live Meeting Density Matrix -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-xs pt-1">
+            <div onclick="focusZone(1)" class="p-3 rounded-xl bg-[#0B1120] border border-cyan-500/40 hover:border-cyan-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-emerald-400">Table 1</span>
-                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1 rounded">Open</span>
+                <span class="font-bold text-cyan-400">جناح 1 • الاستلام الفوري</span>
+                <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
               </div>
-              <span class="text-slate-400 text-[11px] block mt-0.5">Emaar (Window View)</span>
-            </button>
+              <p class="text-[11px] text-slate-400">بوثات B1-B9 و B19-B26 (فندقي)</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-800">
+                <span class="text-emerald-400 font-bold">● 9 متاحة</span>
+                <span class="text-blue-400 font-bold">● 2 جارية</span>
+                <span class="text-amber-400 font-bold">● 1 Walk-in</span>
+              </div>
+            </div>
 
-            <button onclick="click3DTableByName('Table 2')" class="p-2.5 rounded-xl bg-[#0B1120] border border-blue-500/40 hover:border-blue-400 text-left transition-all">
+            <div onclick="focusZone(2)" class="p-3 rounded-xl bg-[#0B1120] border border-purple-500/40 hover:border-purple-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-blue-400">Table 2</span>
-                <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1 rounded">Active</span>
+                <span class="font-bold text-purple-400">جناح 2 • زايد والساحل</span>
+                <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
               </div>
-              <span class="text-slate-400 text-[11px] block mt-0.5">In Meeting (18m left)</span>
-            </button>
+              <p class="text-[11px] text-slate-400">بوثات B10-B18 و B27-B34 (سخنة)</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-800">
+                <span class="text-emerald-400 font-bold">● 8 متاحة</span>
+                <span class="text-blue-400 font-bold">● 3 جارية</span>
+                <span class="text-slate-400 font-bold">● 1 محجوزة</span>
+              </div>
+            </div>
 
-            <button onclick="click3DTableByName('Table 3')" class="p-2.5 rounded-xl bg-[#0B1120] border border-[#24324D] hover:border-slate-500 text-left transition-all">
+            <div onclick="focusZone(3)" class="p-3 rounded-xl bg-[#0B1120] border border-emerald-500/40 hover:border-emerald-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-slate-300">Table 3</span>
-                <span class="text-[10px] bg-slate-800 text-slate-400 px-1 rounded">Reserved</span>
+                <span class="font-bold text-emerald-400">جناح 3 • التجمع الخامس</span>
+                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
               </div>
-              <span class="text-slate-400 text-[11px] block mt-0.5">Next @ 15:00</span>
-            </button>
+              <p class="text-[11px] text-slate-400">بوثات B35-B42 و B51-B58</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-800">
+                <span class="text-emerald-400 font-bold">● 10 متاحة</span>
+                <span class="text-blue-400 font-bold">● 2 جارية</span>
+                <span class="text-slate-500">48 مقعد</span>
+              </div>
+            </div>
 
-            <button onclick="click3DTableByName('Table 4')" class="p-2.5 rounded-xl bg-[#0B1120] border border-amber-500/40 hover:border-amber-400 text-left transition-all">
+            <div onclick="focusZone(4)" class="p-3 rounded-xl bg-[#0B1120] border border-orange-500/40 hover:border-orange-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-amber-400">Table 4</span>
-                <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1 rounded">Walk-in</span>
+                <span class="font-bold text-orange-400">جناح 4 • العاصمة الإدارية</span>
+                <span class="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded font-mono font-bold">12 طاولة</span>
               </div>
-              <span class="text-slate-400 text-[11px] block mt-0.5">Recycled No-Show</span>
-            </button>
+              <p class="text-[11px] text-slate-400">بوثات B43-B50 و B59-B66</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-800">
+                <span class="text-emerald-400 font-bold">● 8 متاحة</span>
+                <span class="text-blue-400 font-bold">● 3 جارية</span>
+                <span class="text-amber-400 font-bold">● 1 Walk-in</span>
+              </div>
+            </div>
 
-            <button onclick="click3DTableByName('VIP Lounge Pod A')" class="p-2.5 rounded-xl bg-[#0B1120] border border-purple-500/40 hover:border-purple-400 text-left transition-all">
+            <div onclick="focusZone(5)" class="p-3 rounded-xl bg-[#0B1120] border border-yellow-500/40 hover:border-yellow-400 cursor-pointer transition-all space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-purple-300">VIP Pod A</span>
-                <span class="text-[10px] bg-purple-500/20 text-purple-200 px-1 rounded">Executive</span>
+                <span class="font-bold text-yellow-300">بوث مميز B67 • VIP</span>
+                <span class="text-[10px] bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded font-mono font-bold">8 × 4 م</span>
               </div>
-              <span class="text-slate-400 text-[11px] block mt-0.5">Acoustic Private Pod</span>
-            </button>
+              <p class="text-[11px] text-slate-400">جناح إدارة المعرض وكبار المستثمرين</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-800">
+                <span class="text-purple-400 font-bold">مجلس VIP 1</span>
+                <span class="text-purple-400 font-bold">مجلس VIP 2</span>
+              </div>
+            </div>
+          </div>
           </div>
 
         </div>
@@ -1295,13 +1346,814 @@
     }
 
     // 3D Table Models Data (Coordinates in 3D Space)
+    
+    // Focus Camera on Selected Hall 3 Zone
+    function focusZone(zId) {
+      for (let i = 0; i <= 5; i++) {
+        const btn = document.getElementById('zbtn-' + i);
+        if (!btn) continue;
+        if (i === zId) {
+          btn.className = 'px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all shadow';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded-lg bg-[#0B1120] text-slate-300 border border-[#24324D] hover:bg-[#151F32] transition-all';
+        }
+      }
+
+      autoRotate = false;
+      const arBtn = document.getElementById('btn-autorotate');
+      if (arBtn) arBtn.innerText = '▶️ Auto-Rotate: OFF';
+
+      if (zId === 0) {
+        reset3DCamera(0.72, 0.58, 1.0);
+      } else if (zId === 1) {
+        // Zone 1: Immediate delivery (Top Left)
+        reset3DCamera(0.42, 0.68, 1.55);
+      } else if (zId === 2) {
+        // Zone 2: October & Zayed & Sahel (Top Right)
+        reset3DCamera(-0.42, 0.68, 1.55);
+      } else if (zId === 3) {
+        // Zone 3: Fifth Settlement (Bottom Left)
+        reset3DCamera(1.15, 0.62, 1.55);
+      } else if (zId === 4) {
+        // Zone 4: Administrative Capital (Bottom Right)
+        reset3DCamera(-1.15, 0.62, 1.55);
+      } else if (zId === 5) {
+        // VIP Booth B67 (8x4m)
+        reset3DCamera(0.0, 0.88, 1.85);
+      }
+    }
+
+    // Auto-load Hall 3 Architectural Floorplan Image
+    if (typeof HALL3_IMAGE_B64 !== 'undefined') {
+      const hImg = new Image();
+      hImg.onload = function() {
+        customHallImg = hImg;
+        floorMode = 'blueprint';
+      };
+      hImg.src = HALL3_IMAGE_B64;
+    } else {
+      const hImg = new Image();
+      hImg.onload = function() {
+        customHallImg = hImg;
+        floorMode = 'blueprint';
+      };
+      hImg.src = './hall3_floorplan.jpeg';
+    }
+
+    // Hall 3 Tables: 48 Meeting Tables (4 Zones x 12 Tables) + 2 VIP Pods in Booth B67
     const tables3D = [
-      { id: 1, name: 'Table 1', booth: 'Emaar Properties (Booth B-14)', rep: 'Tariq Al-Mansoor', status: 'FREE', color: '#10B981', x: -160, y: 0, z: -100, radius: 28 },
-      { id: 2, name: 'Table 2', booth: 'Emaar Properties (Booth B-14)', rep: 'Tariq Al-Mansoor', status: 'OCCUPIED', color: '#3B82F6', x: -60, y: 0, z: -100, radius: 28, pulse: true },
-      { id: 3, name: 'Table 3', booth: 'Emaar Properties (Booth B-14)', rep: 'Sarah Jenkins', status: 'RESERVED', color: '#94A3B8', x: -160, y: 0, z: 20, radius: 28 },
-      { id: 4, name: 'Table 4', booth: 'Emaar Properties (Booth B-14)', rep: 'Elena Rostova', status: 'WALK-IN', color: '#F59E0B', x: -60, y: 0, z: 20, radius: 28 },
-      { id: 5, name: 'VIP Lounge Pod A', booth: 'Executive Quiet Lounge', rep: 'Concierge Managed', status: 'VIP', color: '#A855F7', x: 140, y: 0, z: -40, radius: 42, isVipPod: true }
-    ];
+  {
+    "id": 1,
+    "name": "طاولة 1 (T-1)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B1 • طلعت مصطفى (مدينتي)",
+    "rep": "أحمد الشناوي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -215,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 7,
+    "name": "طاولة 7 (T-7)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B19 • إعمار مصر (العقار التشاركي)",
+    "rep": "م. طارق المنصور",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -215,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 2,
+    "name": "طاولة 2 (T-2)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B2 • بالم هيلز (بادية)",
+    "rep": "عمر فاروق",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -180,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 8,
+    "name": "طاولة 8 (T-8)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B20 • نيو جيزة (فركشنال)",
+    "rep": "سارة عبد الرحمن",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -180,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 3,
+    "name": "طاولة 3 (T-3)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B3 • ماونتن فيو (آي سيتي)",
+    "rep": "دينا عز الدين",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -145,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 9,
+    "name": "طاولة 9 (T-9)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B21 • كليوباترا بالاس",
+    "rep": "خالد النجار",
+    "status": "WALK-IN",
+    "color": "#F59E0B",
+    "x": -145,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 4,
+    "name": "طاولة 4 (T-4)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B4 • سوديك (فيليت)",
+    "rep": "كريم الصاوي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -110,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 10,
+    "name": "طاولة 10 (T-10)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B23 • الدار (فندقي وشقق فندقية)",
+    "rep": "رانية يوسف",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -110,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 5,
+    "name": "طاولة 5 (T-5)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B5 • حسن علام (سوان ليك)",
+    "rep": "نورا سليم",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -75,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 11,
+    "name": "طاولة 11 (T-11)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B24 • سانت ريجيس ريزيدنس",
+    "rep": "محمود الباز",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -75,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 6,
+    "name": "طاولة 6 (T-6)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B6 • تطوير مصر (بلومفيلدز)",
+    "rep": "زياد فهمي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -40,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 12,
+    "name": "طاولة 12 (T-12)",
+    "zone": "جناح 1 • الاستلام الفوري والفندقي",
+    "zoneId": 1,
+    "booth": "بوث B25 • ماريوت ريزيدنس",
+    "rep": "هدى مراد",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -40,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 13,
+    "name": "طاولة 13 (T-13)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B10 • أورا (ZED الشيخ زايد)",
+    "rep": "م. يحيى زكريا",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 40,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 19,
+    "name": "طاولة 19 (T-19)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B27 • لافيستا (العين السخنة)",
+    "rep": "إسلام رضوان",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 40,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 14,
+    "name": "طاولة 14 (T-14)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B11 • سوديك ويست (أكتوبر)",
+    "rep": "ياسمين الشريف",
+    "status": "WALK-IN",
+    "color": "#F59E0B",
+    "x": 75,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 20,
+    "name": "طاولة 20 (T-20)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B28 • تلال (السخنة)",
+    "rep": "شريف عثمان",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": 75,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 15,
+    "name": "طاولة 15 (T-15)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B12 • بالم باركس (أكتوبر)",
+    "rep": "محمد غنيم",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": 110,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 21,
+    "name": "طاولة 21 (T-21)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B31 • مراسي (الساحل الشمالي)",
+    "rep": "نهى كمال",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 110,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 16,
+    "name": "طاولة 16 (T-16)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B13 • إيوان للاستثمار (محور زايد)",
+    "rep": "لبنى علام",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 145,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 22,
+    "name": "طاولة 22 (T-22)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B32 • رأس الحكمة الفاخرة",
+    "rep": "أيمن سراج",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 145,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 17,
+    "name": "طاولة 17 (T-17)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B14 • كابيتال هيلز (زايد)",
+    "rep": "هشام عيسى",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 180,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 23,
+    "name": "طاولة 23 (T-23)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B33 • هاسيندا ويست (الساحل)",
+    "rep": "هيثم توفيق",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 180,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 18,
+    "name": "طاولة 18 (T-18)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B15 • كرمة ريزيدنس (أكتوبر)",
+    "rep": "فاطمة الزهراء",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 215,
+    "y": 0,
+    "z": -125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 24,
+    "name": "طاولة 24 (T-24)",
+    "zone": "جناح 2 • زايد وأكتوبر والساحل والسخنة",
+    "zoneId": 2,
+    "booth": "بوث B34 • سيلفر ساندس (الساحل)",
+    "rep": "ريم القاضي",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": 215,
+    "y": 0,
+    "z": -80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 25,
+    "name": "طاولة 25 (T-25)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B35 • هايد بارك (التجمع الخامس)",
+    "rep": "م. مصطفى الشاذلي",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -215,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 31,
+    "name": "طاولة 31 (T-31)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B41 • بالم هيلز التجمع (بالم سنترال)",
+    "rep": "وليد بركات",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -215,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 26,
+    "name": "طاولة 26 (T-26)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B36 • ميفيدا إعمار (جولدن سكوير)",
+    "rep": "ندى الألفي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -180,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 32,
+    "name": "طاولة 32 (T-32)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B42 • فيفث سكوير المراسم",
+    "rep": "شادي فودة",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -180,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 27,
+    "name": "طاولة 27 (T-27)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B37 • تاج سلطان (مدينة نصر)",
+    "rep": "حازم قاسم",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -145,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 33,
+    "name": "طاولة 33 (T-33)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B51 • فيليت سوديك (التجمع)",
+    "rep": "علي عبد العال",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -145,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 28,
+    "name": "طاولة 28 (T-28)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B38 • سراي مدينة مصر (المستقبل)",
+    "rep": "منى السعدني",
+    "status": "WALK-IN",
+    "color": "#F59E0B",
+    "x": -110,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 34,
+    "name": "طاولة 34 (T-34)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B52 • زيزينيا المستقبل",
+    "rep": "سلمى حسني",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -110,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 29,
+    "name": "طاولة 29 (T-29)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B39 • ليف التجمع (المستقبل سيتي)",
+    "rep": "باسل مكي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -75,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 35,
+    "name": "طاولة 35 (T-35)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B55 • ويست تاون التجمع",
+    "rep": "أكرم جلال",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": -75,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 30,
+    "name": "طاولة 30 (T-30)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B40 • ماونتن فيو هايد بارك",
+    "rep": "إنجي الجمال",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -40,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 36,
+    "name": "طاولة 36 (T-36)",
+    "zone": "جناح 3 • التجمع الخامس والقاهرة الجديدة",
+    "zoneId": 3,
+    "booth": "بوث B56 • ديار التجمع الخامس",
+    "rep": "مروة السعيد",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": -40,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 37,
+    "name": "طاولة 37 (T-37)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B43 • سيليا طلعت مصطفى (العاصمة)",
+    "rep": "م. تامر وهبة",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 40,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 43,
+    "name": "طاولة 43 (T-43)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B49 • سيتي أوفال (R8 العاصمة)",
+    "rep": "ماجد الكردي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 40,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 38,
+    "name": "طاولة 38 (T-38)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B44 • البوسكو مصر إيطاليا (R7)",
+    "rep": "عبير لطفي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 75,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 44,
+    "name": "طاولة 44 (T-44)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B50 • كاسيل لاند مارك (العاصمة)",
+    "rep": "داليا خيري",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": 75,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 39,
+    "name": "طاولة 39 (T-39)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B45 • أويا العاصمة الإدارية",
+    "rep": "شريف الصيرفي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 110,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 45,
+    "name": "طاولة 45 (T-45)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B59 • داون تاون تاورز (CBD)",
+    "rep": "وائل النحاس",
+    "status": "WALK-IN",
+    "color": "#F59E0B",
+    "x": 110,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 40,
+    "name": "طاولة 40 (T-40)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B46 • إنيرجيا كابيتال (منطقة السفارات)",
+    "rep": "سماح بدر",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": 145,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 46,
+    "name": "طاولة 46 (T-46)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B60 • ريجنسي بيزنس تاور",
+    "rep": "غادة متولي",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 145,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 41,
+    "name": "طاولة 41 (T-41)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B47 • ذا تاور CBD (البرج الأيقوني)",
+    "rep": "عمرو الجوهري",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 180,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 47,
+    "name": "طاولة 47 (T-47)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B63 • مدار كابيتال (العاصمة)",
+    "rep": "طارق الشريف",
+    "status": "FREE",
+    "color": "#10B981",
+    "x": 180,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 42,
+    "name": "طاولة 42 (T-42)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B48 • نايل تاور (النهر الأخضر)",
+    "rep": "نجلاء يونس",
+    "status": "WALK-IN",
+    "color": "#F59E0B",
+    "x": 215,
+    "y": 0,
+    "z": 80,
+    "radius": 14,
+    "pulse": false
+  },
+  {
+    "id": 48,
+    "name": "طاولة 48 (T-48)",
+    "zone": "جناح 4 • العاصمة الإدارية الجديدة",
+    "zoneId": 4,
+    "booth": "بوث B64 • إنفرستمنت جيت (العاصمة)",
+    "rep": "أميرة زهران",
+    "status": "OCCUPIED",
+    "color": "#3B82F6",
+    "x": 215,
+    "y": 0,
+    "z": 125,
+    "radius": 14,
+    "pulse": true
+  },
+  {
+    "id": 49,
+    "name": "بوث B67 • VIP Majlis 1",
+    "zone": "بوث مميز B67 (8×4م)",
+    "zoneId": 5,
+    "booth": "بوث مميز B67 • إدارة المعرض وكبار الزوار",
+    "rep": "مستشار الاستثمار العقاري الأول",
+    "status": "VIP",
+    "color": "#A855F7",
+    "x": -14,
+    "y": 0,
+    "z": -160,
+    "radius": 16,
+    "isVipPod": true
+  },
+  {
+    "id": 50,
+    "name": "بوث B67 • VIP Majlis 2",
+    "zone": "بوث مميز B67 (8×4م)",
+    "zoneId": 5,
+    "booth": "بوث مميز B67 • إدارة المعرض وكبار الزوار",
+    "rep": "مدير الصفقات الكبرى",
+    "status": "VIP",
+    "color": "#A855F7",
+    "x": 14,
+    "y": 0,
+    "z": -160,
+    "radius": 16,
+    "isVipPod": true
+  }
+];
+
 
     function resize3DCanvas() {
       const rect = canvas.getBoundingClientRect();
@@ -1396,6 +2248,51 @@
 
     let pulseAngle = 0;
 
+    
+    function extrudeBoothBlock(x1, x2, z1, z2, height, fillColor, strokeColor, label, cx, cy) {
+      const p1 = project3D(x1, 0, z1, cx, cy);
+      const p2 = project3D(x2, 0, z1, cx, cy);
+      const p3 = project3D(x2, 0, z2, cx, cy);
+      const p4 = project3D(x1, 0, z2, cx, cy);
+
+      const t1 = project3D(x1, height, z1, cx, cy);
+      const t2 = project3D(x2, height, z1, cx, cy);
+      const t3 = project3D(x2, height, z2, cx, cy);
+      const t4 = project3D(x1, height, z2, cx, cy);
+
+      ctx.fillStyle = fillColor;
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 1.5;
+
+      // Back Wall
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.lineTo(t2.x, t2.y); ctx.lineTo(t1.x, t1.y);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Left Wall
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y); ctx.lineTo(p4.x, p4.y); ctx.lineTo(t4.x, t4.y); ctx.lineTo(t1.x, t1.y);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Right Wall
+      ctx.beginPath();
+      ctx.moveTo(p2.x, p2.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(t3.x, t3.y); ctx.lineTo(t2.x, t2.y);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Top Rails
+      ctx.beginPath();
+      ctx.moveTo(t1.x, t1.y); ctx.lineTo(t2.x, t2.y); ctx.lineTo(t3.x, t3.y); ctx.lineTo(t4.x, t4.y);
+      ctx.closePath(); ctx.stroke();
+
+      if (label) {
+        const lblP = project3D((x1 + x2) / 2, height - 10, (z1 + z2) / 2, cx, cy);
+        ctx.fillStyle = strokeColor;
+        ctx.font = `bold ${Math.max(9, 10 * lblP.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText(label, lblP.x, lblP.y);
+      }
+    }
+
     function render3D() {
       if (!canvas.width || !canvas.height) {
         requestAnimationFrame(render3D);
@@ -1414,13 +2311,13 @@
       pulseAngle += 0.06;
 
       // 1. Draw Architectural Floor Slab (Chassis Pedestal)
-      const slabP1 = project3D(-260, 0, -200, cx, cy);
-      const slabP2 = project3D(260, 0, -200, cx, cy);
-      const slabP3 = project3D(260, 0, 180, cx, cy);
-      const slabP4 = project3D(-260, 0, 180, cx, cy);
+      const slabP1 = project3D(-280, 0, -210, cx, cy);
+      const slabP2 = project3D(280, 0, -210, cx, cy);
+      const slabP3 = project3D(280, 0, 210, cx, cy);
+      const slabP4 = project3D(-280, 0, 210, cx, cy);
 
-      const slabB3 = project3D(260, 16, 180, cx, cy);
-      const slabB4 = project3D(-260, 16, 180, cx, cy);
+      const slabB3 = project3D(280, 16, 210, cx, cy);
+      const slabB4 = project3D(-280, 16, 210, cx, cy);
 
       // Chassis Side Wall
       ctx.fillStyle = '#060B14';
@@ -1448,7 +2345,7 @@
       // 2. Render Floor Depending on Mode
       if (customHallImg && floorMode !== 'wireframe') {
         // Draw the uploaded hall image in 3D perspective!
-        drawPerspectiveImage(customHallImg, -260, 260, -200, 180, cx, cy);
+        drawPerspectiveImage(customHallImg, -280, 280, -210, 210, cx, cy);
       } else if (floorMode !== 'wireframe') {
         // DRAW AUTHENTIC 2D ARCHITECTURAL EXPO BLUEPRINT ONTO 3D FLOOR
         // Central Boulevard Carpet
@@ -1600,83 +2497,30 @@
 
       // 3. Extruded 3D Booth Walls (Pop-Up Architectural Diorama)
       if (floorMode === 'extrusion') {
-        const wallH = -48;
-        const emL1 = project3D(-230, 0, -160, cx, cy);
-        const emR1 = project3D(-15, 0, -160, cx, cy);
-        const emR2 = project3D(-15, 0, 60, cx, cy);
-        const emL2 = project3D(-230, 0, 60, cx, cy);
+        const wallH = -42;
+        // Row 1 Booths
+        extrudeBoothBlock(-270, -35, -195, -155, wallH, 'rgba(6, 182, 212, 0.18)', '#06B6D4', 'B1-B9 • الاستلام الفوري', cx, cy);
+        extrudeBoothBlock(-30, 30, -195, -155, -55, 'rgba(30, 58, 138, 0.4)', '#FDE047', '👑 بوث مميز B67 (8×4م)', cx, cy);
+        extrudeBoothBlock(35, 270, -195, -155, wallH, 'rgba(139, 92, 246, 0.18)', '#8B5CF6', 'B10-B18 • أكتوبر وزايد', cx, cy);
 
-        const emL1_top = project3D(-230, wallH, -160, cx, cy);
-        const emR1_top = project3D(-15, wallH, -160, cx, cy);
-        const emR2_top = project3D(-15, wallH, 60, cx, cy);
-        const emL2_top = project3D(-230, wallH, 60, cx, cy);
+        // Row 2 Booths
+        extrudeBoothBlock(-270, -35, -55, -18, wallH, 'rgba(6, 182, 212, 0.15)', '#06B6D4', 'B19-B26 • الفندقي والتشاركي', cx, cy);
+        extrudeBoothBlock(35, 270, -55, -18, wallH, 'rgba(139, 92, 246, 0.15)', '#8B5CF6', 'B27-B34 • الساحل والسخنة', cx, cy);
 
-        // Back Wall
-        ctx.fillStyle = 'rgba(212, 175, 55, 0.22)';
-        ctx.strokeStyle = '#D4AF37';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(emL1.x, emL1.y);
-        ctx.lineTo(emR1.x, emR1.y);
-        ctx.lineTo(emR1_top.x, emR1_top.y);
-        ctx.lineTo(emL1_top.x, emL1_top.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        // Row 3 Booths
+        extrudeBoothBlock(-270, -35, 18, 55, wallH, 'rgba(16, 185, 129, 0.15)', '#10B981', 'B35-B42 • التجمع الخامس', cx, cy);
+        extrudeBoothBlock(35, 270, 18, 55, wallH, 'rgba(249, 115, 22, 0.15)', '#F97316', 'B43-B50 • العاصمة الإدارية', cx, cy);
 
-        // Left Side Wall
-        ctx.fillStyle = 'rgba(212, 175, 55, 0.12)';
-        ctx.beginPath();
-        ctx.moveTo(emL1.x, emL1.y);
-        ctx.lineTo(emL2.x, emL2.y);
-        ctx.lineTo(emL2_top.x, emL2_top.y);
-        ctx.lineTo(emL1_top.x, emL1_top.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        // Row 4 Booths
+        extrudeBoothBlock(-270, -35, 155, 195, wallH, 'rgba(16, 185, 129, 0.15)', '#10B981', 'B51-B58 • التجمع والمستقبل', cx, cy);
+        extrudeBoothBlock(35, 270, 155, 195, wallH, 'rgba(249, 115, 22, 0.15)', '#F97316', 'B59-B66 • داون تاون العاصمة', cx, cy);
 
-        // Corner Posts
-        [emL1, emR1, emL2, emR2].forEach((base, idx) => {
-          const top = [emL1_top, emR1_top, emL2_top, emR2_top][idx];
-          ctx.strokeStyle = '#FDE047';
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.moveTo(base.x, base.y);
-          ctx.lineTo(top.x, top.y);
-          ctx.stroke();
-        });
-
-        // Suspended 3D Signboard Banner
-        const signL = project3D(-180, -68, -160, cx, cy);
-        const signR = project3D(-65, -68, -160, cx, cy);
-        ctx.strokeStyle = '#D4AF37';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(signL.x, signL.y);
-        ctx.lineTo(signR.x, signR.y);
-        ctx.stroke();
-
-        ctx.fillStyle = '#D4AF37';
-        ctx.font = `bold ${Math.max(10, 11 * signL.scale)}px sans-serif`;
-        ctx.fillText('🏛️ EMAAR PAVILION', (signL.x + signR.x) / 2, signL.y - 6);
-
-        // Extrude VIP Lounge Acrylic Glass Baffles
-        const vpL1 = project3D(45, 0, -160, cx, cy);
-        const vpR1 = project3D(235, 0, -160, cx, cy);
-        const vpL1_top = project3D(45, wallH, -160, cx, cy);
-        const vpR1_top = project3D(235, wallH, -160, cx, cy);
-
-        ctx.fillStyle = 'rgba(168, 85, 247, 0.2)';
-        ctx.strokeStyle = '#C084FC';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(vpL1.x, vpL1.y);
-        ctx.lineTo(vpR1.x, vpR1.y);
-        ctx.lineTo(vpR1_top.x, vpR1_top.y);
-        ctx.lineTo(vpL1_top.x, vpL1_top.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        // Main Entrance Arch
+        const entP = project3D(0, -30, 205, cx, cy);
+        ctx.fillStyle = '#10B981';
+        ctx.font = `bold ${Math.max(10, 11 * entP.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('🚪 المدخل الرئيسي (MAIN ENTRANCE)', entP.x, entP.y);
       }
 
       // 4. Render Depth-Sorted 3D Tables with Dynamic Beacons
@@ -1838,7 +2682,8 @@
           document.getElementById('tt-name').innerText = found.name;
           document.getElementById('tt-badge').innerText = found.status;
           document.getElementById('tt-badge').style.color = found.color;
-          document.getElementById('tt-booth').innerText = found.booth;
+          const tz = document.getElementById('tt-zone'); if(tz) tz.innerText = found.zone;
+document.getElementById('tt-booth').innerText = found.booth;
           document.getElementById('tt-rep').innerText = 'Specialist: ' + found.rep;
         } else {
           canvas.style.cursor = isDragging ? 'grabbing' : 'grab';
@@ -1862,10 +2707,10 @@
 
     function click3DTable(table) {
       openBookingModal(
-        table.booth.split('(')[0].trim(),
-        'Hall 1 • Booth B-14',
-        'Grand Polo Club & Luxury Portfolio',
-        ['Tariq Al-Mansoor (VIP Director)', 'Sarah Jenkins (Luxury Specialist)'],
+        table.booth.split('•')[1] ? table.booth.split('•')[1].trim() : table.booth,
+        table.booth.split('•')[0] ? table.booth.split('•')[0].trim() : 'قاعة 3',
+        table.zone,
+        [table.rep + ' (مستشار المبيعات)', 'إدارة المعرض'],
         table.name
       );
     }

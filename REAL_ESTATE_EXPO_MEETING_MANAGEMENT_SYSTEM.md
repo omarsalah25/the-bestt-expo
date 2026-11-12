@@ -434,6 +434,19 @@ graph TD
      - 🟡 **Amber**: `WALK_IN_RECYCLED` — 15-minute No-Show auto-recycled table.
      - 🟣 **Violet**: `VIP_POD` — Concierge-managed private pod.
 
+### 6.3 Production Case Study: Hall 3 Architectural Digital Twin (`hall3_floorplan.jpeg`)
+
+The system has been directly calibrated and deployed using the official architectural blueprint of **Hall 3 (قاعة 3 | الانتظار ومسار الحركة المقترح)**:
+
+| Parameter | Hall 3 Architectural Specification | Digital Twin Implementation |
+| :--- | :--- | :--- |
+| **Gross Dimensions** | $88.00\text{ meters} \times 55.00\text{ meters}$ ($4,840\text{ m}^2$) | WebGL Perspective Quad: $X \in [-280, 280]$, $Z \in [-210, 210]$ |
+| **Booth Partitions** | **67 Booths total**: 66 standard ($4\times 4\text{m}$) + 1 VIP Sponsor ($8\times 4\text{m}$) | Procedurally extruded 3D glass/acrylic walls ($Z = 2.8\text{m}$) with zone LED colors |
+| **Negotiation Tables** | **48 Tables** ($12 \times 4$ zones) + 2 VIP Pods in Booth B67 | 50 Interactive 3D cylinder tables with raycasting & hover tooltips |
+| **Seating Capacity** | **192 Chairs** ($4\text{ chairs} \times 48\text{ tables}$) + 8 VIP armchairs | 4 ergonomic armchairs orbiting each 3D table |
+| **Zoning Distribution** | **Zone 1 (Cyan)**: Immediate Delivery & Hotel (B1–B9, B19–B26)<br>**Zone 2 (Purple)**: October, Zayed, Sahel & Sokhna (B10–B18, B27–B34)<br>**Zone 3 (Mint)**: New Cairo & Fifth Settlement (B35–B42, B51–B58)<br>**Zone 4 (Coral)**: New Administrative Capital (B43–B50, B59–B66)<br>**Special Booth B67**: VIP Majlis & Executive Deals ($8\times 4\text{m}$) | Dynamic 1-click Zone Camera Jump (`focusZone(1..5)`) with smooth easing |
+| **Corridors & Circulation** | $5\text{m}$ front corridor, $7\text{m}$ waiting lounges, $5\text{m}$ central net boulevard | Raycast navigation boundaries preventing table collisions |
+
 ---
 
 ## 7. System Health, Latency & Reliability Metrics
