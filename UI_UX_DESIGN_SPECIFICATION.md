@@ -1,172 +1,129 @@
 # Autonomous Real Estate Expo & Meeting Management Platform
-## UI/UX Design System & Lifecycle Interaction Specification
-*100% Self-Contained Standalone Operating System (Zero External Integrations Except Notifications)*
+## UI/UX Design System & 3D Table Visualizer Specification
+*100% Self-Contained Standalone Operating System with Three.js/WebGL Digital Twin*
 
 ---
 
 ## 1. System Ecosystem & Seamless Lifecycle Synergy
 
-The UI/UX across all three portals (Customer, Developer, and Organizer Admin) is designed to operate as a frictionless feedback loop where no user journey encounters a dead end.
+The UI/UX across all three portals (Customer, Developer, and Organizer Admin) is designed to operate as a frictionless feedback loop featuring an **interactive 3D Digital Twin** for table exploration and booking.
 
 ```mermaid
 flowchart LR
     subgraph Investor Journey
-        A["1. Discovery & Matchmaking"] --> B["2. 30-Min Slot Selection"]
+        A["1. Discovery & Matchmaking"] --> B["2. 3D Digital Twin & Table Picker"]
         B --> C["3. Dynamic Mobile QR Pass"]
     end
 
     subgraph Developer Journey
         C --> D["4. Instant Arrival Alert (WhatsApp & Chime)"]
-        D --> E["5. 30-Min Consultation at Table 1-4"]
+        D --> E["5. 30-Min Consultation at 3D Table"]
         E --> F["6. 10-Second Lead Capture & WhatsApp Brochure"]
     end
 
     subgraph Organizer Oversight
-        B --> G["Real-Time Venue Density & Pulse"]
+        B --> G["Real-Time 3D Venue Density & Pulse"]
         F --> G["Aggregate Global Pipeline ($)"]
     end
 ```
 
 ---
 
-## 2. Portal 1: Customer / Investor Portal (End User)
+## 2. 3D Spatial Digital Twin & Table View Experience
 
-### 2.1 User Goals & Psychology
-- **Target Audience**: Ultra-High-Net-Worth Individuals (HNWIs), institutional fund buyers, family offices, and retail property investors.
-- **Key UX Need**: Ultra-fast discovery, zero login fatigue (OTP / magic link), instant 30-second booking, and clear spatial guidance to find booths in massive convention halls.
+### 2.1 Visual Design & Luxury Real Estate Aesthetics
+- **Theme**: Obsidian slate surfaces (`#0B1120`), marble floor grids with subtle gold Cartesian lines, and semi-transparent frosted acrylic booth partitions.
+- **3D Table Elements**:
+  - Cylindrical meeting pedestals with 4 floating executive armchair meshes.
+  - Floating 3D holographic badges hovering directly above each table:
+    - 🟢 `T-1 ● AVAILABLE` (Emerald green aura, ready for instant selection)
+    - 🔵 `T-2 ● OCCUPIED (18m left)` (Sapphire blue with pulsing concentric arrival wave)
+    - 🟡 `T-3 ● RESERVED 15:00` (Subtle champagne gold outline)
+    - 🟠 `T-4 ● WALK-IN READY` (Amber ring: recycled from 15-min no-show)
+    - 🟣 `VIP POD A ● PRIVATE` (Royal purple acoustic glass isolation chamber)
 
-### 2.2 Screen-by-Screen User Flow
+### 2.2 Interactive 3D Camera Controls
+- **Touch & Mouse Orbit**:
+  - Click & drag (or 1-finger swipe): 360° orbital rotation around the booth/hall center.
+  - Scroll wheel (or 2-finger pinch): Smooth exponential zoom in/out with boundary clamping.
+  - Right-click drag (or 2-finger pan): Pan across different exhibition halls.
+- **Preset View Buttons**:
+  - `[Isometric 45°]`: Default luxury bird's-eye perspective.
+  - `[Top-Down 2D]`: Technical CAD view for precision table alignment.
+  - `[Booth B-14 Focus]`: Auto-smooth camera dolly directly inside Emaar's pavilion.
+  - `[VIP Lounge View]`: Centers on the private acoustic negotiation pods.
+- **Click-to-Book Raycasting**:
+  - Hovering over a 3D table illuminates the mesh and displays an interactive tooltip with table number, assigned sales rep, and next open slot.
+  - Clicking any 3D table immediately triggers the **1-on-1 Consultation Drawer** pre-selected to that exact physical table.
+
+### 2.3 2D Hall Image to 3D Spatial Presentation Modes
+- **Mode 1: `[🗺️ 2D Hall Image Projection]`**:
+  - Projects the uploaded 2D hall CAD plan or image onto a dark titanium 3D pedestal in WebGL.
+  - Retains authentic architectural aisle labels, entrance portals, and developer boundaries.
+  - 3D tables cast realistic drop contact shadows directly onto the hall graphic.
+- **Mode 2: `[🏢 3D Wall Pop-Up Extrusion]`**:
+  - Procedurally extrudes booth perimeter walls vertically ($2.8\text{m}$ / $Y = -48\text{px}$) from the 2D floorplan.
+  - Renders semi-transparent frosted acrylic glass partitions, gold top edge rails, and suspended 3D signboards.
+- **Mode 3: `[⚡ Dark Hologram Grid]`**:
+  - Minimalist cyber titanium grid with coordinate axes for low-bandwidth devices.
+- **Volumetric Hologram Beacons (`[💡 Beacons: ON/OFF]` Toggle)**:
+  - Vertical glowing light columns shooting upward from each table with live status color codes and pulsing halo rings.
+- **Interactive Image Uploader**:
+  - `[📁 Upload Your Hall Image]` file input enabling organizers or investors to drop any custom exhibition floorplan and preview it mapped live in 3D space.
+
+---
+
+## 3. Screen-by-Screen User Flow (Customer Portal)
 
 #### Screen 1.1: Intelligent Matchmaking Feed
-- **Header**: Live Expo badge, currency selector (`USD`, `AED`, `EUR`, `GBP`), and language toggle (`English` / `العربية`).
-- **Filter Pills**:
-  - Asset Classes: `[All]` `[Luxury Waterfront Villas]` `[Off-Plan Towers]` `[Commercial Offices]` `[Land Plots]`
-  - Budget Brackets: `[<$500K]` `[$500K - $1.5M]` `[$1.5M - $5M]` `[$5M+ HNWI]`
-- **Developer Card**:
-  - Developer brand badge, verified partner tier, booth number (e.g., *Hall 1 • Booth B-14*).
-  - Highlighted flagship project with projected rental yield (ROI %).
-  - Live table availability chip: e.g., `● 4 Reps Active Today`.
-  - Primary CTA: **`[Schedule 1-on-1 Consultation]`**.
+- Asset class and budget filters (*Villas, Towers, Commercial, Land*).
+- Developer showcase cards featuring project ROI %, booth code, and active sales rep count.
 
-#### Screen 1.2: 3-Step Interactive Booking Drawer
+#### Screen 1.2: 3D Digital Twin & Table Selection Hub
+- Full-screen or modal interactive 3D WebGL canvas.
+- Attendee rotates the 3D model, visually inspects the developer booth, and clicks an available table (e.g., *Table 1 - Window Side*).
+
+#### Screen 1.3: 3-Step Interactive Booking Drawer
 - **Step 1 (Day Selector)**: Segmented control for Expo Day 1, Day 2, Day 3.
-- **Step 2 (Specialist Selection)**: Dropdown or avatar chips to choose a specialist (e.g., *Luxury Villa Specialist*, *Golden Visa Residency Advisor*).
-- **Step 3 (Location Option)**:
-  - `[Booth Table]` (Default: seated directly at developer booth).
-  - `[Central VIP Lounge]` (Quiet, confidential audio-isolated lounge for high-value negotiations).
-- **Step 4 (30-Minute Time Slot Grid)**:
-  - Interactive chips: Morning (10:00 - 13:00) & Afternoon (14:00 - 18:00).
-  - Visual states: Clean white (available), Champagne Gold (selected), Dimmed with lock (booked).
-- **Submission**: Immediate confirmation modal with automated calendar sync (`.ics` / Google / Apple Wallet).
-
-#### Screen 1.3: "My Expo Agenda" Hub
-- Chronological list of upcoming and completed sessions.
-- Status badges: `CONFIRMED (Green)`, `PENDING REVIEW (Amber)`, `COMPLETED (Gray)`.
-- Direct 1-tap navigation button: **`[Show Walking Route to Booth]`**.
+- **Step 2 (Specialist Selection)**: Choose specialist (e.g., *Tariq Al-Mansoor - VIP Director*).
+- **Step 3 (30-Minute Time Slot Grid)**: Morning and afternoon slots with instant Redis collision checks.
 
 #### Screen 1.4: Dynamic Anti-Fraud QR Pass
-- **Visual Anatomy**: Luxury card styling with gold accent header.
-- **Dynamic Security**: Time-based QR token regenerating every 60 seconds with anti-screenshot pulsing border.
-- **Session Countdown**: Large indicator: *"Starts in 12 minutes"*.
-- **The "I Have Arrived" Trigger**:
-  - A prominent full-width button: **`[🔔 I Have Arrived at the Booth]`**.
-  - Tapping this instantly pushes an audible chime and WhatsApp alert to the assigned representative’s tablet.
+- Dynamic time-based QR code with 60-second anti-screenshot pulsing token.
+- Big CTA: **`[🔔 I Have Arrived at the Booth]`** (triggers immediate WhatsApp alert & audio chime on rep's tablet).
 
 ---
 
-## 3. Portal 2: Real Estate Developer / Exhibitor Portal
+## 4. Developer / Exhibitor Portal Specifications
 
-### 3.1 User Goals & Psychology
-- **Target Audience**: Developer Sales Directors, Marketing Managers, and on-site Booth Sales Agents.
-- **Key UX Need**: Maximum lead capture speed, zero table downtime, instant notifications when investors arrive, and native CRM tracking without opening third-party spreadsheets.
+#### Screen 2.1: 3D Booth Command & Table Timeline
+- Live 3D status visualizer paired with the 4-table schedule timeline.
+- Visual alerts: Table 2 pulses blue when attendee arrives.
+- **Walk-In Action**: "+ Seat Walk-In" button for idle or recycled no-show tables.
 
-### 3.2 Key Views & Features
+#### Screen 2.2: Inbound Review Queue
+- Investor declared budget ($4.2M), target asset type, and requested slot.
+- 1-click **Approve**, **Counter-Propose Alternative Slot**, or **Decline**.
 
-#### Screen 2.1: Booth Table Grid & Timeline (The Command Board)
-- **Top Metrics Bar**: Total Today (12), Inbound Pending (2), On-Site Waiting (1), Pipeline Value ($14.8M).
-- **Table Partition Grid (Tables 1 - 4)**:
-  - **Table 1**: `AVAILABLE` (Ready for next booking or walk-in).
-  - **Table 2**: `INVESTOR AT TABLE NOW` (Blue highlight, countdown timer showing 18 mins left).
-  - **Table 3**: `RESERVED @ 15:00` (Assigned to Rep Elena).
-  - **Table 4**: `RECYCLED WALK-IN` (Green indicator: previous session marked no-show, freed for immediate walk-in guest).
-
-#### Screen 2.2: Inbound Requests Review Queue
-- Displays investor tier (*HNWI Family Office*), declared investment budget (*$4.2M*), and preferred language (*Arabic & English*).
-- Action buttons:
-  - **`[✓ Approve & Assign Table 1]`** (1-click confirmation; sends pass to investor).
-  - **`[Propose Alternate Slot]`** (Offers alternative times without outright declining).
-  - **`[Decline]`** (Opens brief polite rejection reason selector).
-
-#### Screen 2.3: Live Consultation Console & Timer
-- Audio chime sounds when investor scans at the booth table.
-- A 30-minute visual countdown clock runs on the sales agent's screen.
-- **5-Minute Wrap-Up Warning**: At minute 25, an amber indicator flashes gently, cueing the representative to conclude discussions and prepare for the next guest.
-
-#### Screen 2.4: 10-Second Lead Capture Dialog (Native CRM)
-- Concluding the meeting opens a streamlined modal:
-  1. **Lead Score**: `HOT 🔥` (ready to book/SPA), `WARM ☀️` (comparing developers), `COLD ❄️` (unqualified).
-  2. **Estimated Deal Value ($)**: Quick slider or number field (e.g., *$2,500,000*).
-  3. **Interested Projects**: Checkboxes of developer projects discussed.
-  4. **Next Step**: Follow-up date picker + action selector (*Site visit, send floorplan, prepare contract*).
-  5. **Auto-Send Collateral Checkbox**: Pre-checked `[✓ Send High-Res Project Brochure via WhatsApp]`.
-  - Tapping **`[Save Lead]`** simultaneously logs the CRM record and sends the brochure directly to the investor's phone.
+#### Screen 2.3: 10-Second Lead Capture (Native CRM)
+- Rating: `HOT 🔥` / `WARM ☀️` / `COLD ❄️`.
+- Deal size input slider ($2.5M).
+- Checkbox: `[✓ Automatically Send High-Res PDF Brochure via WhatsApp]`.
 
 ---
 
-## 4. Portal 3: Expo Organizer / Super Admin Center
+## 5. Organizer / Super Admin Center Specifications
 
-### 4.1 User Goals & Psychology
-- **Target Audience**: Exhibition Owners, Venue Operations Directors, VIP Lounge Concierges.
-- **Key UX Need**: Real-time crowd safety and table density monitoring, master meeting dispute overrides, VIP lounge seat allocation, and aggregate financial ROI tracking.
+#### Screen 3.1: Global Venue Pulse & Live 3D Hall Density
+- 3D heat map of entire exhibition center showing crowd density and table occupancy.
+- Master KPIs: Total meetings, completion rate, declared pipeline ($184.5M).
 
-### 4.2 Key Views & Features
+#### Screen 3.2: Native Visual Floorplan & 3D Builder
+- Upload raw CAD/SVG blueprints.
+- Vector & 3D extrusion tools to draw booths and define table coordinates.
 
-#### Screen 3.1: Global Venue Pulse
-- Real-time KPIs: Total Meetings (1,482), Shows vs No-Shows (94.2% show-up rate), Total Pipeline Generated ($184.5M).
-- **Live Hall Heatmap**: Visual density map indicating foot traffic and table occupancy across Hall 1, Hall 2, and Lounges.
-
-#### Screen 3.2: Native Visual Floorplan & Booth Table Builder
-- Upload raw CAD/SVG floorplan blueprint.
-- Interactive vector canvas:
-  - Click-and-drag to draw booth polygon boundaries (e.g., Booth B-14, 96 sqm).
-  - Subdivide booth interiors into **numbered tables** (Table 1 to 4).
-  - Designate special zones: Central VIP Lounges, Quiet Pods, and Coffee Bars.
-
-#### Screen 3.3: Master Meetings Audit Table
-- Real-time tabular log of every meeting in the venue.
-- Filter by Hall, Developer, Status (`APPROVED`, `CHECKED_IN`, `NO_SHOW`, `COMPLETED`).
-- **Organizer Emergency Override**: Ability to manually reassign a delayed session to an open table or cancel disputed bookings.
-
-#### Screen 3.4: VIP Lounge Table Concierge Console
-- Tablet-optimized view for hostesses and concierges stationed at VIP Lounge entrances.
-- Visual floorplan of VIP Lounges A & B (12 tables each).
-- One-tap seat allocation for walk-in VIP investors who arrive without pre-booking.
-
-#### Screen 3.5: Notification Gateway Health Monitor
-- Live delivery throughput graph for WhatsApp Cloud API and Twilio SMS.
-- Error log displaying undelivered messages with auto-retry toggles.
+#### Screen 3.3: Master Meetings Audit Log & Overrides
+- Searchable log of every scheduled session across all halls with organizer reassignment controls.
 
 ---
-
-## 5. Design System Tokens & Multilingual Standards
-
-```
-/* Color Tokens */
---bg-midnight:        #0B1120; /* Deep Obsidian Slate */
---surface-card:       #151F32; /* Primary Component Surface */
---border-subtle:      #24324D; /* Clean Modern Border */
---accent-gold:        #D4AF37; /* Champagne Gold / Luxury Brand */
---accent-emerald:     #10B981; /* Confirmed / Active Status */
---accent-sapphire:    #3B82F6; /* Checked-In / Live Meeting */
---accent-crimson:     #EF4444; /* Hot Lead / Alert */
-
-/* Typography */
---font-sans:          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-```
-
-### Multilingual & RTL Rules
-- Layout directions dynamically invert based on locale: `dir="rtl"` for Arabic, `dir="ltr"` for English.
-- Currency amounts, booth codes (e.g., `B-14`), and table numbers (`T-2`) remain strictly internationalized for universal legibility across all languages.
-
----
-*UI/UX Design Specification v3.1 | Autonomous Operating System*
+*UI/UX Design Specification v3.2 | 3D Digital Twin Standard*

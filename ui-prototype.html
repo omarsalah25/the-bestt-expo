@@ -37,6 +37,10 @@
       font-weight: 800;
       box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
     }
+    canvas {
+      touch-action: none;
+      user-select: none;
+    }
   </style>
 </head>
 <body class="bg-[#0B1120] text-slate-100 min-h-screen p-2 md:p-6 antialiased">
@@ -53,7 +57,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-lg font-black tracking-tight text-white">PROPEXPO <span class="text-amber-400 font-bold">| ExpoOS</span></h1>
-            <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold font-mono">STANDALONE SYSTEM</span>
+            <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold font-mono">3D DIGITAL TWIN</span>
           </div>
           <p class="text-xs text-slate-400">Autonomous Real Estate Exhibition & Meeting Operating System</p>
         </div>
@@ -98,9 +102,13 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-2 text-xs">
+        <!-- 4 Sub-Tabs including 3D Visualizer -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
           <button onclick="switchCustomerSubTab('browse')" id="c-sub-browse" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all">
             🔍 Explore Developers
+          </button>
+          <button onclick="switchCustomerSubTab('3d')" id="c-sub-3d" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition-all flex items-center gap-1.5">
+            <span>🕶️</span> 3D Table Visualizer
           </button>
           <button onclick="switchCustomerSubTab('agenda')" id="c-sub-agenda" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition-all">
             📅 My Agenda (2)
@@ -165,10 +173,16 @@
                 </div>
               </div>
             </div>
-            <button onclick="openBookingModal('Emaar Properties', 'Hall 1 • Booth B-14', 'Grand Polo Club', ['Tariq Al-Mansoor (VIP Director)', 'Sarah Jenkins (Luxury Specialist)'])" 
-              class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-md transition-all">
-              Schedule 1-on-1 Consultation
-            </button>
+            <div class="space-y-2">
+              <button onclick="openBookingModal('Emaar Properties', 'Hall 1 • Booth B-14', 'Grand Polo Club', ['Tariq Al-Mansoor (VIP Director)', 'Sarah Jenkins (Luxury Specialist)'], 'Table 1 (Window Side)')" 
+                class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-md transition-all">
+                Schedule 1-on-1 Consultation
+              </button>
+              <button onclick="switchCustomerSubTab('3d'); focusBoothOn3D('Emaar Properties', 'Booth B-14');" 
+                class="w-full bg-[#0B1120] hover:bg-slate-800 border border-[#24324D] text-amber-400 text-xs py-2 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                <span>🕶️</span> View Booth & Tables in 3D
+              </button>
+            </div>
           </div>
 
           <!-- Damac -->
@@ -199,10 +213,16 @@
                 </div>
               </div>
             </div>
-            <button onclick="openBookingModal('Damac Properties', 'Hall 2 • Booth A-08', 'Cavalli Couture', ['Karim El-Sayed (HNWI Specialist)', 'Elena Rostova (International Sales)'])" 
-              class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-md transition-all">
-              Schedule 1-on-1 Consultation
-            </button>
+            <div class="space-y-2">
+              <button onclick="openBookingModal('Damac Properties', 'Hall 2 • Booth A-08', 'Cavalli Couture', ['Karim El-Sayed (HNWI Specialist)', 'Elena Rostova (International Sales)'], 'Table 2')" 
+                class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-md transition-all">
+                Schedule 1-on-1 Consultation
+              </button>
+              <button onclick="switchCustomerSubTab('3d'); focusBoothOn3D('Damac Properties', 'Booth A-08');" 
+                class="w-full bg-[#0B1120] hover:bg-slate-800 border border-[#24324D] text-amber-400 text-xs py-2 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                <span>🕶️</span> View Booth & Tables in 3D
+              </button>
+            </div>
           </div>
 
           <!-- Sobha -->
@@ -233,16 +253,151 @@
                 </div>
               </div>
             </div>
-            <button onclick="openBookingModal('Sobha Realty', 'Hall 1 • Booth C-02', 'Sobha One', ['Rohan Mehta (Commercial Director)', 'Fatima Al-Hashemi (Investment Lead)'])" 
-              class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-md transition-all">
-              Schedule 1-on-1 Consultation
+            <div class="space-y-2">
+              <button onclick="openBookingModal('Sobha Realty', 'Hall 1 • Booth C-02', 'Sobha One', ['Rohan Mehta (Commercial Director)', 'Fatima Al-Hashemi (Investment Lead)'], 'Table 1')" 
+                class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-md transition-all">
+                Schedule 1-on-1 Consultation
+              </button>
+              <button onclick="switchCustomerSubTab('3d'); focusBoothOn3D('Sobha Realty', 'Booth C-02');" 
+                class="w-full bg-[#0B1120] hover:bg-slate-800 border border-[#24324D] text-amber-400 text-xs py-2 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                <span>🕶️</span> View Booth & Tables in 3D
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- Sub-View 1.2: 3D DIGITAL TWIN & INTERACTIVE TABLE VIEW (THREE.JS)  -->
+      <!-- ================================================================= -->
+      <div id="c-view-3d" class="hidden space-y-4">
+        <div class="bg-[#151F32] border border-[#24324D] rounded-2xl p-5 shadow-2xl space-y-4">
+          
+          <!-- 3D Header & View Preset Buttons -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-3 border-b border-[#24324D]">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-amber-400 text-lg">🕶️</span>
+                <h3 class="text-base font-bold text-white">3D Spatial Digital Twin & Table Visualizer</h3>
+                <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-mono font-bold">THREE.JS / WEBGL</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Drag to rotate 360° in 3D space • Scroll to zoom • Click any table to book instantly</p>
+            </div>
+
+            <!-- 3D Camera Controls & Legend -->
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              <button onclick="reset3DCamera(0.7, 0.55, 1.0)" class="px-2.5 py-1.5 rounded-lg bg-[#0B1120] border border-[#24324D] hover:border-slate-500 text-slate-300 font-mono">
+                📐 45° Angle
+              </button>
+              <button onclick="reset3DCamera(0.0, 1.50, 1.1)" class="px-2.5 py-1.5 rounded-lg bg-[#0B1120] border border-[#24324D] hover:border-slate-500 text-slate-300 font-mono">
+                🔝 Top-Down
+              </button>
+              <button onclick="toggle3DAutoRotate()" id="btn-autorotate" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                ▶️ Auto-Rotate: ON
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D Twin Presentation & Hall Image Mode Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-[#0B1120] rounded-xl border border-[#24324D]">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-semibold text-slate-300">🏛️ Spatial Twin Mode:</span>
+              <button onclick="setFloorMode('blueprint')" id="mode-blueprint-btn" class="px-2.5 py-1 text-xs rounded-lg font-bold bg-amber-500 text-slate-950 transition-all shadow">
+                🗺️ 2D Hall Image Projection
+              </button>
+              <button onclick="setFloorMode('extrusion')" id="mode-extrusion-btn" class="px-2.5 py-1 text-xs rounded-lg font-semibold bg-[#151F32] hover:bg-[#1E293B] text-slate-300 border border-[#24324D] transition-all">
+                🏢 3D Wall Pop-Up Extrusion
+              </button>
+              <button onclick="setFloorMode('wireframe')" id="mode-wireframe-btn" class="px-2.5 py-1 text-xs rounded-lg font-semibold bg-[#151F32] hover:bg-[#1E293B] text-slate-300 border border-[#24324D] transition-all">
+                ⚡ Dark Hologram Grid
+              </button>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <label class="cursor-pointer px-2.5 py-1 text-xs rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition-all flex items-center gap-1.5 font-medium">
+                <span>📁 Upload Your Hall Image (PNG/JPG)</span>
+                <input type="file" id="customHallUpload" accept="image/*" class="hidden" onchange="handleHallImageUpload(event)">
+              </label>
+              <button onclick="toggleLightBeacons()" id="btn-beacons" class="px-2.5 py-1 text-xs rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono">
+                💡 Beacons: ON
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D Canvas Box -->
+          <div class="relative w-full h-[450px] bg-[#070D19] rounded-2xl border-2 border-[#24324D] overflow-hidden shadow-inner flex items-center justify-center">
+            
+            <canvas id="threeCanvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+
+            <!-- Floating 3D Control Hints Overlay -->
+            <div class="absolute bottom-3 left-3 bg-[#0B1120]/80 backdrop-blur-md border border-[#24324D] px-3 py-1.5 rounded-xl text-[11px] text-slate-300 flex items-center gap-3 pointer-events-none">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span> Free Table</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span> In Session (Active)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400 inline-block"></span> VIP Pod</span>
+              <span class="text-slate-500">| 🖱️ Drag to orbit • 👆 Click table</span>
+            </div>
+
+            <!-- Dynamic 3D Table Tooltip (Hover) -->
+            <div id="threeTooltip" class="hidden absolute pointer-events-none bg-[#151F32]/95 backdrop-blur-md border border-amber-400/60 p-3 rounded-xl shadow-2xl text-xs space-y-1 z-30 transition-all">
+              <div class="flex items-center justify-between gap-3">
+                <span id="tt-name" class="font-bold text-white">Table 1</span>
+                <span id="tt-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">FREE</span>
+              </div>
+              <p id="tt-booth" class="text-slate-400 text-[11px]">Emaar Properties • Booth B-14</p>
+              <p id="tt-rep" class="text-amber-300 text-[11px]">Rep: Tariq Al-Mansoor</p>
+              <p class="text-emerald-400 text-[10px] font-mono mt-1">👉 Click to Book This Table</p>
+            </div>
+
+          </div>
+
+          <!-- Table Capacity Quick Selector Strip -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs pt-1">
+            <button onclick="click3DTableByName('Table 1')" class="p-2.5 rounded-xl bg-[#0B1120] border border-emerald-500/40 hover:border-emerald-400 text-left transition-all">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-emerald-400">Table 1</span>
+                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1 rounded">Open</span>
+              </div>
+              <span class="text-slate-400 text-[11px] block mt-0.5">Emaar (Window View)</span>
+            </button>
+
+            <button onclick="click3DTableByName('Table 2')" class="p-2.5 rounded-xl bg-[#0B1120] border border-blue-500/40 hover:border-blue-400 text-left transition-all">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-blue-400">Table 2</span>
+                <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1 rounded">Active</span>
+              </div>
+              <span class="text-slate-400 text-[11px] block mt-0.5">In Meeting (18m left)</span>
+            </button>
+
+            <button onclick="click3DTableByName('Table 3')" class="p-2.5 rounded-xl bg-[#0B1120] border border-[#24324D] hover:border-slate-500 text-left transition-all">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-slate-300">Table 3</span>
+                <span class="text-[10px] bg-slate-800 text-slate-400 px-1 rounded">Reserved</span>
+              </div>
+              <span class="text-slate-400 text-[11px] block mt-0.5">Next @ 15:00</span>
+            </button>
+
+            <button onclick="click3DTableByName('Table 4')" class="p-2.5 rounded-xl bg-[#0B1120] border border-amber-500/40 hover:border-amber-400 text-left transition-all">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-amber-400">Table 4</span>
+                <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1 rounded">Walk-in</span>
+              </div>
+              <span class="text-slate-400 text-[11px] block mt-0.5">Recycled No-Show</span>
+            </button>
+
+            <button onclick="click3DTableByName('VIP Lounge Pod A')" class="p-2.5 rounded-xl bg-[#0B1120] border border-purple-500/40 hover:border-purple-400 text-left transition-all">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-purple-300">VIP Pod A</span>
+                <span class="text-[10px] bg-purple-500/20 text-purple-200 px-1 rounded">Executive</span>
+              </div>
+              <span class="text-slate-400 text-[11px] block mt-0.5">Acoustic Private Pod</span>
             </button>
           </div>
 
         </div>
       </div>
 
-      <!-- Sub-View 1.2: My Agenda -->
+      <!-- Sub-View 1.3: My Agenda -->
       <div id="c-view-agenda" class="hidden space-y-4">
         <div class="bg-[#151F32] border border-[#24324D] rounded-2xl p-6 shadow-xl">
           <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#24324D]">
@@ -257,7 +412,6 @@
           </div>
 
           <div class="space-y-3">
-            <!-- Agenda Item 1 -->
             <div class="bg-[#0B1120] border border-emerald-500/40 p-4 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center font-bold text-base">
@@ -279,7 +433,6 @@
               </div>
             </div>
 
-            <!-- Agenda Item 2 -->
             <div class="bg-[#0B1120] border border-[#24324D] p-4 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 opacity-90">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center font-bold text-base">
@@ -300,7 +453,7 @@
         </div>
       </div>
 
-      <!-- Sub-View 1.3: Digital QR Pass -->
+      <!-- Sub-View 1.4: Digital QR Pass -->
       <div id="c-view-pass" class="hidden flex justify-center">
         <div class="w-full max-w-md bg-[#151F32] border border-[#24324D] rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden">
           <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600"></div>
@@ -384,7 +537,6 @@
             </div>
           </div>
 
-          <!-- Developer Portal Navigation Switcher -->
           <div class="flex items-center gap-2 text-xs">
             <button onclick="switchDevSubTab('schedule')" id="dev-sub-schedule" class="px-3.5 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl shadow">
               📅 Booth Tables & Queue
@@ -395,7 +547,6 @@
           </div>
         </div>
 
-        <!-- Metric KPI Cards -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5 pt-4 border-t border-[#24324D]">
           <div class="bg-[#0B1120] p-3 rounded-xl border border-[#24324D]">
             <span class="text-[11px] text-slate-400 block">Total Meetings Today</span>
@@ -423,7 +574,6 @@
       <!-- Dev Sub-View 2.1: Booth Tables & Live Inbound Queue -->
       <div id="dev-view-schedule" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Left 2 Cols: Booth Tables Live Board -->
         <div class="lg:col-span-2 bg-[#151F32] border border-[#24324D] rounded-2xl p-5 shadow-xl space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#24324D]">
             <div>
@@ -459,7 +609,7 @@
             </div>
           </div>
 
-          <!-- Table 1: Free (Can Take Walk-In) -->
+          <!-- Table 1: Free -->
           <div class="bg-[#0B1120] border border-[#24324D] p-3.5 rounded-xl flex items-center justify-between">
             <div class="flex items-center gap-3">
               <span class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center font-mono">T-1</span>
@@ -491,7 +641,7 @@
 
         </div>
 
-        <!-- Right 1 Col: Inbound Requests Review Queue -->
+        <!-- Inbound Requests Review Queue -->
         <div class="bg-[#151F32] border border-[#24324D] rounded-2xl p-5 shadow-xl space-y-4">
           <div class="pb-3 border-b border-[#24324D]">
             <h3 class="text-sm font-bold text-white flex items-center justify-between">
@@ -501,7 +651,6 @@
             <p class="text-xs text-slate-400">Review investor tier and approve/decline</p>
           </div>
 
-          <!-- Pending Item -->
           <div id="dev-req-box-1" class="bg-[#0B1120] border border-amber-500/40 p-4 rounded-xl space-y-3">
             <div class="flex items-start justify-between">
               <div>
@@ -526,7 +675,6 @@
             </div>
           </div>
 
-          <!-- Sales Rep Roster Capacity -->
           <div class="pt-3 border-t border-[#24324D] space-y-2">
             <span class="text-xs text-slate-400 font-medium block">Booth Team Availability:</span>
             <div class="text-xs space-y-1.5">
@@ -611,7 +759,6 @@
     <!-- ================================================================= -->
     <div id="portal-admin" class="portal-view hidden space-y-6">
       
-      <!-- Admin Control Header -->
       <div class="bg-[#151F32] border border-[#24324D] rounded-2xl p-5 shadow-xl">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div class="flex items-center gap-3">
@@ -627,7 +774,6 @@
             </div>
           </div>
 
-          <!-- Admin Sub-View Switcher -->
           <div class="flex items-center gap-2 text-xs">
             <button onclick="switchAdminSubTab('pulse')" id="adm-sub-pulse" class="px-3 py-1.5 bg-amber-500 text-slate-950 font-bold rounded-xl shadow">
               📈 Venue Pulse
@@ -641,7 +787,6 @@
           </div>
         </div>
 
-        <!-- Global Master KPIs -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5 pt-4 border-t border-[#24324D]">
           <div class="bg-[#0B1120] p-3 rounded-xl border border-[#24324D]">
             <span class="text-[11px] text-slate-400 block">Total Venue Meetings</span>
@@ -669,7 +814,6 @@
       <!-- Admin Sub-View 3.1: Venue Pulse & Meetings Audit Log -->
       <div id="adm-view-pulse" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Left 2 Cols: Master Meetings Log -->
         <div class="lg:col-span-2 bg-[#151F32] border border-[#24324D] rounded-2xl p-5 shadow-xl space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#24324D]">
             <div>
@@ -679,7 +823,6 @@
             <span class="text-xs text-slate-400 font-mono">1,482 Total Records</span>
           </div>
 
-          <!-- Table -->
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead class="text-slate-400 bg-[#0B1120] border-b border-[#24324D]">
@@ -722,7 +865,7 @@
           </div>
         </div>
 
-        <!-- Right 1 Col: VIP Lounge Capacity Management -->
+        <!-- VIP Lounge Capacity -->
         <div class="bg-[#151F32] border border-[#24324D] rounded-2xl p-5 shadow-xl space-y-4">
           <div class="pb-3 border-b border-[#24324D]">
             <h3 class="text-sm font-bold text-white">Central VIP Lounge Manager</h3>
@@ -773,7 +916,6 @@
           </div>
         </div>
 
-        <!-- Built-in Floorplan Canvas Grid -->
         <div class="bg-[#0B1120] border-2 border-[#24324D] rounded-xl p-5 relative overflow-x-auto min-w-[650px]">
           <div class="w-full text-center mb-4">
             <span class="inline-block px-4 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300">
@@ -832,7 +974,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <!-- WhatsApp -->
           <div class="bg-[#0B1120] border border-[#24324D] p-4 rounded-xl space-y-3">
             <div class="flex items-center justify-between">
               <span class="font-bold text-white flex items-center gap-1.5"><span>💬</span> WhatsApp Cloud API</span>
@@ -845,7 +986,6 @@
             </div>
           </div>
 
-          <!-- Twilio SMS -->
           <div class="bg-[#0B1120] border border-[#24324D] p-4 rounded-xl space-y-3">
             <div class="flex items-center justify-between">
               <span class="font-bold text-white flex items-center gap-1.5"><span>📱</span> Twilio SMS Fallback</span>
@@ -858,7 +998,6 @@
             </div>
           </div>
 
-          <!-- Web/Mobile Push -->
           <div class="bg-[#0B1120] border border-[#24324D] p-4 rounded-xl space-y-3">
             <div class="flex items-center justify-between">
               <span class="font-bold text-white flex items-center gap-1.5"><span>🔔</span> Web & App Push (FCM)</span>
@@ -878,7 +1017,7 @@
   </main>
 
   <!-- ================================================================= -->
-  <!-- MODAL: CUSTOMER BOOKING DRAWER                                    -->
+  <!-- MODAL: CUSTOMER BOOKING DRAWER (3D PRE-SELECTED TABLE)            -->
   <!-- ================================================================= -->
   <div id="bookingModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#151F32] border border-[#24324D] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-150">
@@ -890,6 +1029,15 @@
           <p id="modalBoothLocation" class="text-xs text-slate-400">Hall 1 • Booth B-14</p>
         </div>
         <button onclick="closeBookingModal()" class="text-slate-400 hover:text-white text-xl p-1">✕</button>
+      </div>
+
+      <!-- 3D Table Pre-selection Notice -->
+      <div id="modal3DNotice" class="bg-[#0B1120] border border-emerald-500/40 p-2.5 rounded-xl flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-400 font-bold">📍 3D Selected:</span>
+          <span id="modalTableNumber" class="text-white font-semibold">Table 1 (Window Side)</span>
+        </div>
+        <span class="text-[10px] text-emerald-400 font-mono bg-emerald-500/20 px-2 py-0.5 rounded">LOCK SECURED</span>
       </div>
 
       <!-- Step 1: Select Day -->
@@ -909,22 +1057,7 @@
         </select>
       </div>
 
-      <!-- Step 3: Location Option -->
-      <div>
-        <label class="text-xs text-slate-400 block mb-2 font-medium">Meeting Setting:</label>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <label class="flex items-center gap-2 p-2.5 rounded-xl border border-[#24324D] bg-[#0B1120] cursor-pointer hover:border-amber-500/50">
-            <input type="radio" name="loc" checked class="accent-amber-400">
-            <span>Booth Meeting Table</span>
-          </label>
-          <label class="flex items-center gap-2 p-2.5 rounded-xl border border-[#24324D] bg-[#0B1120] cursor-pointer hover:border-amber-500/50">
-            <input type="radio" name="loc" class="accent-amber-400">
-            <span>Central VIP Lounge</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- Step 4: Time Slot -->
+      <!-- Step 3: Time Slot -->
       <div>
         <label class="text-xs text-slate-400 block mb-2 font-medium">Choose 30-Minute Time Slot:</label>
         <div class="grid grid-cols-4 gap-2 text-xs">
@@ -1001,7 +1134,7 @@
     </div>
   </div>
 
-  <!-- Master JavaScript Switcher & Actions -->
+  <!-- Master JavaScript & Pure Interactive 3D Canvas Engine -->
   <script>
     // 1. MASTER PORTAL SWITCHER
     function switchPortal(portalName) {
@@ -1012,9 +1145,9 @@
       document.getElementById(`btn-portal-${portalName}`).classList.add('active');
     }
 
-    // 2. CUSTOMER SUB-TABS
+    // 2. CUSTOMER SUB-TABS (INCLUDING 3D VIEW)
     function switchCustomerSubTab(subTabId) {
-      ['browse', 'agenda', 'pass'].forEach(t => {
+      ['browse', '3d', 'agenda', 'pass'].forEach(t => {
         document.getElementById(`c-view-${t}`).classList.add('hidden');
         const btn = document.getElementById(`c-sub-${t}`);
         btn.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
@@ -1025,6 +1158,10 @@
       const activeBtn = document.getElementById(`c-sub-${subTabId}`);
       activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
       activeBtn.classList.remove('text-slate-300');
+
+      if (subTabId === '3d') {
+        resize3DCanvas();
+      }
     }
 
     // 3. DEVELOPER SUB-TABS
@@ -1084,10 +1221,686 @@
       });
     }
 
-    // Customer Booking Modal
-    function openBookingModal(devName, booth, project, reps) {
+    // =========================================================================
+    // 3D SPATIAL DIGITAL TWIN ENGINE (Three.js Math / Pure WebGL Canvas)
+    // =========================================================================
+    const canvas = document.getElementById('threeCanvas');
+    const ctx = canvas.getContext('2d');
+    const tooltip = document.getElementById('threeTooltip');
+
+    let yaw = 0.72; // Horizontal orbit angle
+    let pitch = 0.58; // Vertical elevation angle
+    let zoom = 1.0;
+    let autoRotate = true;
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let hoveredTable = null;
+
+    // View & Presentation Modes: 2D Hall Image to 3D Twin Engine
+    let floorMode = 'blueprint'; // 'blueprint' (2D Image Projection), 'extrusion' (3D Wall Pop-up Extrusion), 'wireframe' (Hologram Grid)
+    let showBeacons = true;
+    let customHallImg = null;
+
+    function setFloorMode(mode) {
+      floorMode = mode;
+      const bBtn = document.getElementById('mode-blueprint-btn');
+      const eBtn = document.getElementById('mode-extrusion-btn');
+      const wBtn = document.getElementById('mode-wireframe-btn');
+      if (bBtn && eBtn && wBtn) {
+        bBtn.className = (mode === 'blueprint')
+          ? 'px-2.5 py-1 text-xs rounded-lg font-bold bg-amber-500 text-slate-950 transition-all shadow'
+          : 'px-2.5 py-1 text-xs rounded-lg font-semibold bg-[#151F32] hover:bg-[#1E293B] text-slate-300 border border-[#24324D] transition-all';
+        eBtn.className = (mode === 'extrusion')
+          ? 'px-2.5 py-1 text-xs rounded-lg font-bold bg-amber-500 text-slate-950 transition-all shadow'
+          : 'px-2.5 py-1 text-xs rounded-lg font-semibold bg-[#151F32] hover:bg-[#1E293B] text-slate-300 border border-[#24324D] transition-all';
+        wBtn.className = (mode === 'wireframe')
+          ? 'px-2.5 py-1 text-xs rounded-lg font-bold bg-amber-500 text-slate-950 transition-all shadow'
+          : 'px-2.5 py-1 text-xs rounded-lg font-semibold bg-[#151F32] hover:bg-[#1E293B] text-slate-300 border border-[#24324D] transition-all';
+      }
+    }
+
+    function toggleLightBeacons() {
+      showBeacons = !showBeacons;
+      const btn = document.getElementById('btn-beacons');
+      if (btn) {
+        btn.innerText = showBeacons ? '💡 Beacons: ON' : '💡 Beacons: OFF';
+        btn.className = showBeacons 
+          ? 'px-2.5 py-1 text-xs rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono'
+          : 'px-2.5 py-1 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 font-mono';
+      }
+    }
+
+    function handleHallImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          customHallImg = img;
+          setFloorMode('blueprint');
+          showNotification('✅ Hall floorplan image loaded! 3D perspective projection active.');
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function hexToRgba(hex, alpha) {
+      let c = hex.replace('#', '');
+      if (c.length === 3) c = c.split('').map(x => x + x).join('');
+      const num = parseInt(c, 16);
+      return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+    }
+
+    // 3D Table Models Data (Coordinates in 3D Space)
+    const tables3D = [
+      { id: 1, name: 'Table 1', booth: 'Emaar Properties (Booth B-14)', rep: 'Tariq Al-Mansoor', status: 'FREE', color: '#10B981', x: -160, y: 0, z: -100, radius: 28 },
+      { id: 2, name: 'Table 2', booth: 'Emaar Properties (Booth B-14)', rep: 'Tariq Al-Mansoor', status: 'OCCUPIED', color: '#3B82F6', x: -60, y: 0, z: -100, radius: 28, pulse: true },
+      { id: 3, name: 'Table 3', booth: 'Emaar Properties (Booth B-14)', rep: 'Sarah Jenkins', status: 'RESERVED', color: '#94A3B8', x: -160, y: 0, z: 20, radius: 28 },
+      { id: 4, name: 'Table 4', booth: 'Emaar Properties (Booth B-14)', rep: 'Elena Rostova', status: 'WALK-IN', color: '#F59E0B', x: -60, y: 0, z: 20, radius: 28 },
+      { id: 5, name: 'VIP Lounge Pod A', booth: 'Executive Quiet Lounge', rep: 'Concierge Managed', status: 'VIP', color: '#A855F7', x: 140, y: 0, z: -40, radius: 42, isVipPod: true }
+    ];
+
+    function resize3DCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    window.addEventListener('resize', resize3DCanvas);
+
+    // 3D Perspective Projection Function
+    function project3D(x, y, z, cx, cy) {
+      // Rotation Yaw (around Y)
+      const x1 = x * Math.cos(yaw) - z * Math.sin(yaw);
+      const z1 = x * Math.sin(yaw) + z * Math.cos(yaw);
+
+      // Rotation Pitch (around X)
+      const y1 = y * Math.cos(pitch) - z1 * Math.sin(pitch);
+      const z2 = y * Math.sin(pitch) + z1 * Math.cos(pitch);
+
+      const fov = 420;
+      const distance = 460;
+      const scale = (fov / (distance + z2)) * zoom;
+
+      return {
+        x: cx + x1 * scale,
+        y: cy + y1 * scale,
+        z: z2,
+        scale: scale
+      };
+    }
+
+    // Piecewise Triangular Texture Mapping for Uploaded Hall Image in 3D Perspective
+    function drawPerspectiveImage(img, xMin, xMax, zMin, zMax, cx, cy) {
+      const grid = 6;
+      const dx = (xMax - xMin) / grid;
+      const dz = (zMax - zMin) / grid;
+      const sw = img.width / grid;
+      const sh = img.height / grid;
+
+      for (let i = 0; i < grid; i++) {
+        for (let j = 0; j < grid; j++) {
+          const x0 = xMin + i * dx;
+          const x1 = x0 + dx;
+          const z0 = zMin + j * dz;
+          const z1 = z0 + dz;
+
+          const p00 = project3D(x0, 0, z0, cx, cy);
+          const p10 = project3D(x1, 0, z0, cx, cy);
+          const p11 = project3D(x1, 0, z1, cx, cy);
+          const p01 = project3D(x0, 0, z1, cx, cy);
+
+          const sx = i * sw;
+          const sy = j * sh;
+
+          // Triangle 1: (p00, p10, p01)
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(p00.x, p00.y);
+          ctx.lineTo(p10.x, p10.y);
+          ctx.lineTo(p01.x, p01.y);
+          ctx.closePath();
+          ctx.clip();
+
+          const m1 = (p10.x - p00.x) / sw;
+          const m2 = (p10.y - p00.y) / sw;
+          const m3 = (p01.x - p00.x) / sh;
+          const m4 = (p01.y - p00.y) / sh;
+          ctx.transform(m1, m2, m3, m4, p00.x - m1 * sx - m3 * sy, p00.y - m2 * sx - m4 * sy);
+          ctx.drawImage(img, 0, 0);
+          ctx.restore();
+
+          // Triangle 2: (p10, p11, p01)
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(p10.x, p10.y);
+          ctx.lineTo(p11.x, p11.y);
+          ctx.lineTo(p01.x, p01.y);
+          ctx.closePath();
+          ctx.clip();
+
+          const n1 = (p11.x - p01.x) / sw;
+          const n2 = (p11.y - p01.y) / sw;
+          const n3 = (p11.x - p10.x) / sh;
+          const n4 = (p11.y - p10.y) / sh;
+          ctx.transform(n1, n2, n3, n4, p01.x - n1 * sx - n3 * (sy + sh), p01.y - n2 * sx - n4 * (sy + sh));
+          ctx.drawImage(img, 0, 0);
+          ctx.restore();
+        }
+      }
+    }
+
+    let pulseAngle = 0;
+
+    function render3D() {
+      if (!canvas.width || !canvas.height) {
+        requestAnimationFrame(render3D);
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const cx = rect.width / 2;
+      const cy = rect.height / 2 + 25;
+
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      if (autoRotate && !isDragging) {
+        yaw += 0.0035;
+      }
+      pulseAngle += 0.06;
+
+      // 1. Draw Architectural Floor Slab (Chassis Pedestal)
+      const slabP1 = project3D(-260, 0, -200, cx, cy);
+      const slabP2 = project3D(260, 0, -200, cx, cy);
+      const slabP3 = project3D(260, 0, 180, cx, cy);
+      const slabP4 = project3D(-260, 0, 180, cx, cy);
+
+      const slabB3 = project3D(260, 16, 180, cx, cy);
+      const slabB4 = project3D(-260, 16, 180, cx, cy);
+
+      // Chassis Side Wall
+      ctx.fillStyle = '#060B14';
+      ctx.beginPath();
+      ctx.moveTo(slabP4.x, slabP4.y);
+      ctx.lineTo(slabP3.x, slabP3.y);
+      ctx.lineTo(slabB3.x, slabB3.y);
+      ctx.lineTo(slabB4.x, slabB4.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Top Slab Surface
+      ctx.fillStyle = (floorMode === 'wireframe') ? '#070D19' : '#0B1322';
+      ctx.beginPath();
+      ctx.moveTo(slabP1.x, slabP1.y);
+      ctx.lineTo(slabP2.x, slabP2.y);
+      ctx.lineTo(slabP3.x, slabP3.y);
+      ctx.lineTo(slabP4.x, slabP4.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#24324D';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // 2. Render Floor Depending on Mode
+      if (customHallImg && floorMode !== 'wireframe') {
+        // Draw the uploaded hall image in 3D perspective!
+        drawPerspectiveImage(customHallImg, -260, 260, -200, 180, cx, cy);
+      } else if (floorMode !== 'wireframe') {
+        // DRAW AUTHENTIC 2D ARCHITECTURAL EXPO BLUEPRINT ONTO 3D FLOOR
+        // Central Boulevard Carpet
+        const aveL1 = project3D(-35, 0, -200, cx, cy);
+        const aveR1 = project3D(35, 0, -200, cx, cy);
+        const aveR2 = project3D(35, 0, 180, cx, cy);
+        const aveL2 = project3D(-35, 0, 180, cx, cy);
+        ctx.fillStyle = '#0F1A2E';
+        ctx.beginPath();
+        ctx.moveTo(aveL1.x, aveL1.y);
+        ctx.lineTo(aveR1.x, aveR1.y);
+        ctx.lineTo(aveR2.x, aveR2.y);
+        ctx.lineTo(aveL2.x, aveL2.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#1E293B';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Directional Avenue Wayfinding
+        const aveTxtP = project3D(0, 0, -10, cx, cy);
+        ctx.save();
+        ctx.fillStyle = '#64748B';
+        ctx.font = `bold ${Math.max(9, 10 * aveTxtP.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('▲ GRAND EXPO BOULEVARD (AISLE 1) ▲', aveTxtP.x, aveTxtP.y);
+        ctx.restore();
+
+        // Entrance Portal
+        const entP = project3D(0, 0, 172, cx, cy);
+        ctx.fillStyle = '#10B981';
+        ctx.font = `bold ${Math.max(9, 11 * entP.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('🚪 MAIN ENTRANCE & REGISTRATION', entP.x, entP.y);
+
+        // Emaar Booth B-14 Footprint
+        const emL1 = project3D(-230, 0, -160, cx, cy);
+        const emR1 = project3D(-15, 0, -160, cx, cy);
+        const emR2 = project3D(-15, 0, 60, cx, cy);
+        const emL2 = project3D(-230, 0, 60, cx, cy);
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.08)';
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(emL1.x, emL1.y);
+        ctx.lineTo(emR1.x, emR1.y);
+        ctx.lineTo(emR2.x, emR2.y);
+        ctx.lineTo(emL2.x, emL2.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        const emLabel = project3D(-120, 0, -145, cx, cy);
+        ctx.fillStyle = '#D4AF37';
+        ctx.font = `bold ${Math.max(10, 11 * emLabel.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('🏛️ BOOTH B-14 • EMAAR PROPERTIES', emLabel.x, emLabel.y);
+
+        // Aldar Booth B-15 Footprint
+        const alL1 = project3D(-230, 0, 75, cx, cy);
+        const alR1 = project3D(-15, 0, 75, cx, cy);
+        const alR2 = project3D(-15, 0, 160, cx, cy);
+        const alL2 = project3D(-230, 0, 160, cx, cy);
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.05)';
+        ctx.strokeStyle = '#06B6D4';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(alL1.x, alL1.y);
+        ctx.lineTo(alR1.x, alR1.y);
+        ctx.lineTo(alR2.x, alR2.y);
+        ctx.lineTo(alL2.x, alL2.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        const alLabel = project3D(-120, 0, 118, cx, cy);
+        ctx.fillStyle = '#06B6D4';
+        ctx.font = `bold ${Math.max(9, 10 * alLabel.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('🏢 BOOTH B-15 • ALDAR PROPERTIES', alLabel.x, alLabel.y);
+
+        // Damac Booth A-01 Footprint
+        const daL1 = project3D(45, 0, 60, cx, cy);
+        const daR1 = project3D(235, 0, 60, cx, cy);
+        const daR2 = project3D(235, 0, 160, cx, cy);
+        const daL2 = project3D(45, 0, 160, cx, cy);
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.05)';
+        ctx.strokeStyle = '#10B981';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(daL1.x, daL1.y);
+        ctx.lineTo(daR1.x, daR1.y);
+        ctx.lineTo(daR2.x, daR2.y);
+        ctx.lineTo(daL2.x, daL2.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        const daLabel = project3D(140, 0, 110, cx, cy);
+        ctx.fillStyle = '#10B981';
+        ctx.font = `bold ${Math.max(9, 10 * daLabel.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('💎 BOOTH A-01 • DAMAC LUXURY', daLabel.x, daLabel.y);
+
+        // VIP Lounge Footprint
+        const vpL1 = project3D(45, 0, -160, cx, cy);
+        const vpR1 = project3D(235, 0, -160, cx, cy);
+        const vpR2 = project3D(235, 0, 40, cx, cy);
+        const vpL2 = project3D(45, 0, 40, cx, cy);
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.08)';
+        ctx.strokeStyle = '#A855F7';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(vpL1.x, vpL1.y);
+        ctx.lineTo(vpR1.x, vpR1.y);
+        ctx.lineTo(vpR2.x, vpR2.y);
+        ctx.lineTo(vpL2.x, vpL2.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        const vpLabel = project3D(140, 0, -145, cx, cy);
+        ctx.fillStyle = '#C084FC';
+        ctx.font = `bold ${Math.max(9, 10 * vpLabel.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('🛡️ VIP INVESTOR MAJLIS', vpLabel.x, vpLabel.y);
+      } else {
+        // Hologram Wireframe Grid Mode
+        ctx.strokeStyle = '#1E293B';
+        ctx.lineWidth = 1;
+        const gridSize = 240;
+        const step = 48;
+        for (let i = -gridSize; i <= gridSize; i += step) {
+          const p1 = project3D(i, 0, -gridSize, cx, cy);
+          const p2 = project3D(i, 0, gridSize, cx, cy);
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+
+          const p3 = project3D(-gridSize, 0, i, cx, cy);
+          const p4 = project3D(gridSize, 0, i, cx, cy);
+          ctx.beginPath();
+          ctx.moveTo(p3.x, p3.y);
+          ctx.lineTo(p4.x, p4.y);
+          ctx.stroke();
+        }
+      }
+
+      // 3. Extruded 3D Booth Walls (Pop-Up Architectural Diorama)
+      if (floorMode === 'extrusion') {
+        const wallH = -48;
+        const emL1 = project3D(-230, 0, -160, cx, cy);
+        const emR1 = project3D(-15, 0, -160, cx, cy);
+        const emR2 = project3D(-15, 0, 60, cx, cy);
+        const emL2 = project3D(-230, 0, 60, cx, cy);
+
+        const emL1_top = project3D(-230, wallH, -160, cx, cy);
+        const emR1_top = project3D(-15, wallH, -160, cx, cy);
+        const emR2_top = project3D(-15, wallH, 60, cx, cy);
+        const emL2_top = project3D(-230, wallH, 60, cx, cy);
+
+        // Back Wall
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.22)';
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(emL1.x, emL1.y);
+        ctx.lineTo(emR1.x, emR1.y);
+        ctx.lineTo(emR1_top.x, emR1_top.y);
+        ctx.lineTo(emL1_top.x, emL1_top.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Left Side Wall
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.12)';
+        ctx.beginPath();
+        ctx.moveTo(emL1.x, emL1.y);
+        ctx.lineTo(emL2.x, emL2.y);
+        ctx.lineTo(emL2_top.x, emL2_top.y);
+        ctx.lineTo(emL1_top.x, emL1_top.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Corner Posts
+        [emL1, emR1, emL2, emR2].forEach((base, idx) => {
+          const top = [emL1_top, emR1_top, emL2_top, emR2_top][idx];
+          ctx.strokeStyle = '#FDE047';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(base.x, base.y);
+          ctx.lineTo(top.x, top.y);
+          ctx.stroke();
+        });
+
+        // Suspended 3D Signboard Banner
+        const signL = project3D(-180, -68, -160, cx, cy);
+        const signR = project3D(-65, -68, -160, cx, cy);
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(signL.x, signL.y);
+        ctx.lineTo(signR.x, signR.y);
+        ctx.stroke();
+
+        ctx.fillStyle = '#D4AF37';
+        ctx.font = `bold ${Math.max(10, 11 * signL.scale)}px sans-serif`;
+        ctx.fillText('🏛️ EMAAR PAVILION', (signL.x + signR.x) / 2, signL.y - 6);
+
+        // Extrude VIP Lounge Acrylic Glass Baffles
+        const vpL1 = project3D(45, 0, -160, cx, cy);
+        const vpR1 = project3D(235, 0, -160, cx, cy);
+        const vpL1_top = project3D(45, wallH, -160, cx, cy);
+        const vpR1_top = project3D(235, wallH, -160, cx, cy);
+
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.2)';
+        ctx.strokeStyle = '#C084FC';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(vpL1.x, vpL1.y);
+        ctx.lineTo(vpR1.x, vpR1.y);
+        ctx.lineTo(vpR1_top.x, vpR1_top.y);
+        ctx.lineTo(vpL1_top.x, vpL1_top.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // 4. Render Depth-Sorted 3D Tables with Dynamic Beacons
+      const sortedTables = [...tables3D].map(t => {
+        const proj = project3D(t.x, t.y, t.z, cx, cy);
+        return { ...t, proj };
+      }).sort((a, b) => b.proj.z - a.proj.z);
+
+      sortedTables.forEach(t => {
+        const p = t.proj;
+        const rad = t.radius * p.scale;
+        const isHovered = hoveredTable && hoveredTable.id === t.id;
+
+        // Volumetric Holographic Light Pillar (Beacons)
+        if (showBeacons) {
+          const bTop = project3D(t.x, -85, t.z, cx, cy);
+          const beamW = (t.radius * 0.7) * p.scale;
+          const beamGrad = ctx.createLinearGradient(p.x, p.y, bTop.x, bTop.y);
+          beamGrad.addColorStop(0, hexToRgba(t.color, 0.38));
+          beamGrad.addColorStop(0.8, hexToRgba(t.color, 0.08));
+          beamGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+          ctx.fillStyle = beamGrad;
+          ctx.beginPath();
+          ctx.moveTo(p.x - beamW, p.y - 10 * p.scale);
+          ctx.lineTo(bTop.x - beamW * 0.5, bTop.y);
+          ctx.lineTo(bTop.x + beamW * 0.5, bTop.y);
+          ctx.lineTo(p.x + beamW, p.y - 10 * p.scale);
+          ctx.closePath();
+          ctx.fill();
+
+          // Pulsing halo at top of beacon
+          const haloR = (6 + Math.sin(pulseAngle * 2) * 2) * p.scale;
+          ctx.strokeStyle = t.color;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.ellipse(bTop.x, bTop.y, haloR * 1.5, haloR * 0.6, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // Pulsing Wave for Active In-Meeting Table (Table 2)
+        if (t.pulse) {
+          const pulseR = rad + (Math.sin(pulseAngle) + 1) * 7;
+          ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.ellipse(p.x, p.y, pulseR, pulseR * 0.55, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // Table Shadow Cast Directly onto Floorplan Image
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y + 4, rad, rad * 0.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3D Table Cylinder Base (Pedestal)
+        ctx.fillStyle = isHovered ? '#D4AF37' : (t.isVipPod ? '#581C87' : '#1E293B');
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y - 12 * p.scale, rad, rad * 0.52, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = isHovered ? '#FDE047' : t.color;
+        ctx.lineWidth = isHovered ? 3 : 1.8;
+        ctx.stroke();
+
+        // 4 Surrounding Executive Chairs in 3D
+        const chairDist = rad * 1.55;
+        const chairRad = rad * 0.28;
+        const angles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
+
+        angles.forEach(ang => {
+          const cx_chair = p.x + Math.cos(ang + yaw) * chairDist;
+          const cy_chair = p.y - 10 * p.scale + Math.sin(ang + yaw) * (chairDist * 0.52);
+
+          ctx.fillStyle = '#334155';
+          ctx.beginPath();
+          ctx.ellipse(cx_chair, cy_chair, chairRad, chairRad * 0.6, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#475569';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+
+        // Floating 3D Holographic Status Pin
+        const pinTopY = p.y - 45 * p.scale;
+        ctx.strokeStyle = isHovered ? '#FDE047' : t.color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - 12 * p.scale);
+        ctx.lineTo(p.x, pinTopY);
+        ctx.stroke();
+
+        // Badge pill
+        ctx.fillStyle = '#0B1120';
+        ctx.strokeStyle = isHovered ? '#FDE047' : t.color;
+        ctx.lineWidth = 1.5;
+        const badgeW = (t.name.length * 6.5 + 24) * p.scale;
+        const badgeH = 18 * p.scale;
+        ctx.beginPath();
+        ctx.roundRect(p.x - badgeW / 2, pinTopY - badgeH, badgeW, badgeH, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `bold ${Math.max(10, 11 * p.scale)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${t.name}`, p.x, pinTopY - badgeH / 2);
+      });
+
+      requestAnimationFrame(render3D);
+    }
+
+    // Mouse & Touch Dragging for 360° Orbit
+    canvas.addEventListener('mousedown', e => {
+      isDragging = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    window.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      if (isDragging) {
+        autoRotate = false;
+        document.getElementById('btn-autorotate').innerText = '▶️ Auto-Rotate: OFF';
+        const dx = e.clientX - lastMouseX;
+        const dy = e.clientY - lastMouseY;
+        yaw += dx * 0.009;
+        pitch = Math.max(0.15, Math.min(1.4, pitch + dy * 0.007));
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+      } else {
+        // Raycasting / Hover Detection
+        const cx = rect.width / 2;
+        const cy = rect.height / 2 + 25;
+        let found = null;
+
+        tables3D.forEach(t => {
+          const p = project3D(t.x, t.y, t.z, cx, cy);
+          const dist = Math.hypot(mouseX - p.x, mouseY - p.y);
+          if (dist < t.radius * p.scale * 1.5) {
+            found = t;
+          }
+        });
+
+        hoveredTable = found;
+        if (found) {
+          canvas.style.cursor = 'pointer';
+          tooltip.classList.remove('hidden');
+          tooltip.style.left = `${mouseX + 15}px`;
+          tooltip.style.top = `${mouseY - 35}px`;
+          document.getElementById('tt-name').innerText = found.name;
+          document.getElementById('tt-badge').innerText = found.status;
+          document.getElementById('tt-badge').style.color = found.color;
+          document.getElementById('tt-booth').innerText = found.booth;
+          document.getElementById('tt-rep').innerText = 'Specialist: ' + found.rep;
+        } else {
+          canvas.style.cursor = isDragging ? 'grabbing' : 'grab';
+          tooltip.classList.add('hidden');
+        }
+      }
+    });
+
+    // Zoom on wheel
+    canvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoom = Math.max(0.65, Math.min(1.8, zoom - e.deltaY * 0.0012));
+    }, { passive: false });
+
+    // Click on 3D Table
+    canvas.addEventListener('click', e => {
+      if (hoveredTable) {
+        click3DTable(hoveredTable);
+      }
+    });
+
+    function click3DTable(table) {
+      openBookingModal(
+        table.booth.split('(')[0].trim(),
+        'Hall 1 • Booth B-14',
+        'Grand Polo Club & Luxury Portfolio',
+        ['Tariq Al-Mansoor (VIP Director)', 'Sarah Jenkins (Luxury Specialist)'],
+        table.name
+      );
+    }
+
+    function click3DTableByName(name) {
+      const t = tables3D.find(item => item.name === name);
+      if (t) click3DTable(t);
+    }
+
+    function reset3DCamera(newYaw, newPitch, newZoom) {
+      yaw = newYaw;
+      pitch = newPitch;
+      zoom = newZoom;
+    }
+
+    function toggle3DAutoRotate() {
+      autoRotate = !autoRotate;
+      document.getElementById('btn-autorotate').innerText = autoRotate ? '▶️ Auto-Rotate: ON' : '⏸️ Auto-Rotate: OFF';
+    }
+
+    function focusBoothOn3D(devName, boothCode) {
+      reset3DCamera(0.72, 0.58, 1.25);
+    }
+
+    // Start 3D Engine
+    resize3DCanvas();
+    render3D();
+
+    // =========================================================================
+    // MODAL & LIFECYCLE BOOKING LOGIC
+    // =========================================================================
+    function openBookingModal(devName, booth, project, reps, tableName = 'Table 1 (Window Side)') {
       document.getElementById('modalDevName').innerText = devName;
       document.getElementById('modalBoothLocation').innerText = booth + ' • ' + project;
+      document.getElementById('modalTableNumber').innerText = tableName;
       const repSelect = document.getElementById('repSelect');
       repSelect.innerHTML = reps.map(r => `<option>${r}</option>`).join('');
       document.getElementById('bookingModal').classList.remove('hidden');
